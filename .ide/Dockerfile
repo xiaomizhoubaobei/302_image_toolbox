@@ -1,20 +1,28 @@
-# 使用最新版 Node.js 官方镜像
+# .ide/Dockerfile
+
+# 可将 node 替换为需要的基础镜像
 FROM node:latest
 
-# 设置工作目录
-WORKDIR /app
 
-# 全局安装 Hexo
+# 安装 code-server 和 vscode 常用插件
+RUN curl -fsSL https://code-server.dev/install.sh | sh \
+  && code-server --install-extension cnbcool.cnb-welcome \
+  && code-server --install-extension redhat.vscode-yaml \
+  && code-server --install-extension dbaeumer.vscode-eslint \
+  && code-server --install-extension waderyan.gitblame \
+  && code-server --install-extension mhutchie.git-graph \
+  && code-server --install-extension donjayamanne.githistory \
+  && code-server --install-extension tencent-cloud.coding-copilot \
+  && echo done
+
+# 安装 ssh 服务，用于支持 VSCode 等客户端通过 Remote-SSH 访问开发环境（也可按需安装其他软件）
+RUN apt-get update && apt-get install -y git wget unzip openssh-server
+
+#安装和初始化Hexo
 RUN npm install -g hexo-cli
-
-# 初始化 Hexo 项目
 RUN hexo init .
-
-# 安装依赖
 RUN npm install
 
-# 暴露 Hexo 默认端口
-EXPOSE 4000
-
-# 启动 Hexo 服务器
-CMD ["hexo", "server"]
+# 指定字符集支持命令行输入中文（根据需要选择字符集）
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8
