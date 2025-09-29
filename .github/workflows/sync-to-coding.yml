@@ -35,7 +35,7 @@ jobs:
           git config --global user.email "${{ secrets.GIT_EMAIL }}"
 
       - name: Add CNB Remote
-        run: git remote add cnb https://${{ secrets.CNB_TOKEN }}@cnb.cool/XMZZUZHI/Github/302/302_image_toolbox.git
+        run: git remote add cnb https://${{ secrets.CNB_TOKEN }}@cnb.cool/XMZZUZHI/Github/302/302_image_toolbox
 
       - name: Push to CNB
         run: git push cnb main
