@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "lighthouse-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@iflow-mcp/lighthouse-mcp"
+      ]
+    },
+    "time": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "iflow-mcp_mcp-server-time",
+        "mcp-server-time"
+      ]
+    },
+    "qrcode-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@iflow-mcp/qrcode-mcp"
+      ]
+    },
+    "mcp-server-chart": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@antv/mcp-server-chart"
+      ]
+    },
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@iflow-mcp/mcp-mermaid@0.1.3"
+      ]
+    }
+  }
+}

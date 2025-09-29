@@ -1,0 +1,19 @@
+<svg id="组_4" data-name="组 4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 185 185">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 12px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="矩形_2_拷贝_8" data-name="矩形 2 拷贝 8" class="cls-1" d="M178.451,50.07V18.592A12.782,12.782,0,0,0,165.643,5.835H131.792"/>
+  <path id="矩形_2_拷贝_9" data-name="矩形 2 拷贝 9" class="cls-1" d="M134.939,178.979h31.608a12.782,12.782,0,0,0,12.808-12.756V132.51"/>
+  <path id="矩形_2_拷贝_10" data-name="矩形 2 拷贝 10" class="cls-1" d="M5.905,50.356V18.774a12.747,12.747,0,0,1,12.7-12.8H52.156"/>
+  <path id="矩形_2_拷贝_10-2" data-name="矩形 2 拷贝 10" class="cls-1" d="M50.019,178.675H18.688a12.747,12.747,0,0,1-12.7-12.8V132.054"/>
+  <path id="矩形_2_拷贝_5" data-name="矩形 2 拷贝 5" class="cls-1" d="M62.1,51.6h60.673a10,10,0,0,1,10,10v56.607a10,10,0,0,1-10,10H62.1a10,10,0,0,1-10-10V61.6A10,10,0,0,1,62.1,51.6Z"/>
+</svg>

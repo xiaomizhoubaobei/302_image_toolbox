@@ -1,0 +1,59 @@
+$theme-color: #61DAFB;
+
+body {
+	margin: 0;
+}
+
+.image-editor {
+	color: $theme-color;
+	border: solid 1px #2b2a30;
+	max-height: 100%;
+	&__preview {
+		height: 45px;
+		width: 45px;
+		background: black;
+		border: solid 1px #2b2a30;
+		position: absolute;
+		left: 20px;
+		top: 20px;
+		border-radius: 50%;
+	}
+	&__cropper {
+		background: #0f0e13;
+		height: 400px;
+		max-height: 100%;
+		position: relative;
+	}
+	&__slider {
+		width: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 20px;
+		position: absolute;
+	}
+	&__cropper-overlay {
+		transition: 0.5s;
+		&--faded {
+			color: rgba(black, 0.9);
+		}
+	}
+	&__service {
+		pointer-events: none;
+		left: -100%;
+		position: absolute;
+	}
+	&__reset-button {
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		background: rgba(white, 0.1);
+		&:hover {
+			fill: $theme-color;
+			background: rgba(white, 0.2);
+		}
+		&--hidden {
+			opacity: 0;
+			visibility: hidden;
+		}
+	}
+}

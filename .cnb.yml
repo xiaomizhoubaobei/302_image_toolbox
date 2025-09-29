@@ -1,0 +1,26 @@
+# .cnb.yml
+$:
+  vscode:
+    - runner:
+        cpus: 64
+      services:
+        - vscode
+        - docker
+      docker:
+        image: docker.cnb.cool/xmzzuzhi/cnb-docker/node:latest
+      stages:
+        - name: 更换NPM源
+          script:
+            npm config set registry https://repo.huaweicloud.com/repository/npm/
+        - name: 赋予GPG脚本权限
+          script:
+            chmod +x /workspace/install_gpg_keys.sh
+        - name: 安装 iFlow CLI
+          script:
+            npm i -g @iflow-ai/iflow-cli@latest
+        - name: 安装 Codebuddy Code CLI
+          script:
+            npm install -g @tencent-ai/codebuddy-code 
+        - name: 安装 gemini-cli
+          script:
+            npm install -g @google/gemini-cli@latest

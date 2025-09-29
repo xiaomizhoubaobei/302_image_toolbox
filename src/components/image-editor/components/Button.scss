@@ -1,0 +1,27 @@
+.image-editor-button {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: transparent;
+	fill: #88888b;
+	transition: 0.5s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	color: currentColor;
+	padding: 0;
+	&--active {
+		// background: rgba(white, 0.03);
+		fill: currentColor;
+	}
+	&:hover, &:focus {
+		background: rgba(white, 0.03);
+	}
+	@media (max-width: 540px) {
+		width: 32px;
+		height: 32px;
+	}
+}

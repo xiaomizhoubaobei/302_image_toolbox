@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 185 185">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 13px;
+      }
+
+      .cls-2 {
+        fill: currentColor;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <circle id="椭圆_4" data-name="椭圆 4" class="cls-1" cx="92.328" cy="92.828" r="86.11"/>
+  <path id="椭圆_4_拷贝" data-name="椭圆 4 拷贝" class="cls-2" d="M92.333,6.714a86.12,86.12,0,1,1,0,172.239"/>
+</svg>
