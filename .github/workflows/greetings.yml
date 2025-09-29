@@ -1,0 +1,16 @@
+name: 欢迎问候
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.TOKEN }}
+        issue-message: "👋 感谢您提交首个Issue！我们非常重视您的反馈，团队将尽快审核并回复。"
+        pr-message: "🎉 感谢您提交首个Pull Request！我们感谢您的贡献，团队将尽快审核您的代码。"
