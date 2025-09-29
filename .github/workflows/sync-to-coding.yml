@@ -38,4 +38,4 @@ jobs:
         run: git remote add cnb https://${{ secrets.CNB_TOKEN }}@cnb.cool/XMZZUZHI/Github/302/302_image_toolbox.git
 
       - name: Push to CNB
-        run: git push cnb master
+        run: git push cnb main
