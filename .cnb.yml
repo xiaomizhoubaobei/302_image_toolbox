@@ -8,6 +8,13 @@ $:
         - docker
       docker:
         image: docker.cnb.cool/xmzzuzhi/cnb-docker/node:latest
+      env:
+        - ANTHROPIC_BASE_URL=https://ai.gitee.com/anthropic
+        - ANTHROPIC_AUTH_TOKEN
+        - ANTHROPIC_MODEL=kimi-k2-instruct
+        - ANTHROPIC_SMALL_FAST_MODEL=kimi-k2-instruct
+      imports:
+        - https://cnb.cool/XMZZUZHI/key/-/blob/main/CLI.yml
       stages:
         - name: 更换NPM源
           script:
@@ -21,6 +28,6 @@ $:
         - name: 安装 Codebuddy Code CLI
           script:
             npm install -g @tencent-ai/codebuddy-code 
-        - name: 安装 gemini-cli
+        - name: 安装 Claude Code
           script:
-            npm install -g @google/gemini-cli@latest
+            npm install -g @anthropic-ai/claude-code

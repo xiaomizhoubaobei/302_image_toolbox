@@ -1,0 +1,21 @@
+# 此工作流将对拉取请求进行分类，并根据拉取请求中修改的路径应用标签。
+#
+# 要使用此工作流，您需要设置一个 .github/labeler.yml 配置文件。
+# 更多信息请参见：
+# https://github.com/actions/labeler
+
+name: Labeler
+on: [pull_request_target]
+
+jobs:
+  label:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - uses: actions/labeler@v4
+      with:
+        repo-token: "${{ secrets.TOKEN }}"

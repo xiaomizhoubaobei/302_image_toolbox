@@ -1,0 +1,34 @@
+name: PR阅读时间估算
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # 指定分支以提高安全性
+    branches:
+      - main
+
+permissions:
+  # 需要写入PR的权限以更新描述
+  pull-requests: write
+  # 需要读取代码内容的权限
+  contents: read
+
+jobs:
+  reading-time:
+    runs-on: ubuntu-latest
+    # 仅在PR不是草稿状态时运行
+    if: github.event.pull_request.draft == false
+    steps:
+      # 检出代码以便分析
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          # 获取完整的git历史以便准确计算
+          fetch-depth: 0
+      
+      # 运行PR阅读时间估算Action
+      - name: 估算PR阅读时间
+        uses: micahstubbs/pr-reading-time@v1
+        with:
+          # 使用GitHub Token进行身份验证
+          github-token: ${{ secrets.TOKEN }}
