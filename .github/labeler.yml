@@ -1,0 +1,233 @@
+# GitHub Actions 标签器配置
+# 此文件定义了基于文件路径应应用哪些标签
+
+# 前端组件
+前端组件:
+  - src/components/**
+  - src/app/_component/**
+
+# UI 组件
+UI组件:
+  - src/components/ui/**
+  - src/components/image-editor/components/**
+
+# 图像编辑器
+图像编辑器:
+  - src/components/image-editor/**
+  - src/app/_component/edit.tsx
+
+# 图像编辑器组件
+图像编辑器组件:
+  - src/components/image-editor/components/**
+  - src/components/image-editor/icons/**
+
+# 图像编辑器图标
+图像编辑器图标:
+  - src/components/image-editor/icons/**
+
+# 图像处理功能组件
+图像处理:
+  - src/components/Image-*.tsx
+  - src/components/image-*.tsx
+
+# 历史记录功能
+历史记录:
+  - src/components/history-*.tsx
+  - src/components/*history*.tsx
+
+# 上传组件
+上传组件:
+  - src/components/upload-*.tsx
+  - src/components/drop-*.tsx
+  - src/components/*upload*.tsx
+
+# 本地化
+本地化:
+  - src/locales/**
+  - src/components/lang-*.tsx
+  - src/components/*-menu.tsx
+  - src/components/*-selecter.tsx
+
+# API 和后端
+API和后端:
+  - src/lib/api.ts
+  - src/app/api/**
+  - next.config.mjs
+
+# 状态管理
+状态管理:
+  - src/stores/**
+  - src/lib/utils.ts
+
+# 工具类
+工具类:
+  - src/utils/**
+  - src/lib/utils.ts
+
+# 常量定义
+常量定义:
+  - src/constants/**
+
+# 类型定义
+类型定义:
+  - src/types/**
+
+# 文档
+文档:
+  - README.md
+  - docs/**
+  - .github/**/*.md
+
+# 配置文件
+配置文件:
+  - package.json
+  - tsconfig.json
+  - tailwind.config.ts
+  - postcss.config.mjs
+  - next.config.mjs
+  - Dockerfile
+  - .env.example
+
+# 测试
+测试:
+  - src/__tests__/**
+  - src/**/*.test.ts
+  - src/**/*.test.tsx
+
+# 样式
+样式:
+  - src/components/**/*.scss
+  - src/components/image-editor/**/*.scss
+  - src/app/globals.css
+  - tailwind.config.ts
+
+# 页面和布局
+页面布局:
+  - src/app/page.tsx
+  - src/app/layout.tsx
+
+# 导航组件
+导航组件:
+  - src/components/nav*.tsx
+  - src/components/*nav*.tsx
+  - src/components/breadcrumb*.tsx
+
+# 模态框组件
+模态框:
+  - src/components/*modal*.tsx
+  - src/components/*dialog*.tsx
+  - src/components/*sheet*.tsx
+
+# 表单组件
+表单组件:
+  - src/components/ui/input.tsx
+  - src/components/ui/checkbox.tsx
+  - src/components/ui/select.tsx
+  - src/components/ui/slider.tsx
+  - src/components/ui/toggle*.tsx
+  - src/components/ui/button.tsx
+  - src/components/*input*.tsx
+  - src/components/*checkbox*.tsx
+  - src/components/*select*.tsx
+  - src/components/*slider*.tsx
+  - src/components/*button*.tsx
+
+# 媒体组件
+媒体组件:
+  - src/components/video*.tsx
+  - src/components/image*.tsx
+  - src/components/canvas*.tsx
+  - src/components/*player*.tsx
+  - src/components/*viewer*.tsx
+
+# 应用页面组件
+应用页面:
+  - src/app/_component/auth.tsx
+  - src/app/_component/edit.tsx
+  - src/app/_component/land.tsx
+
+# 工具组件
+工具组件:
+  - src/components/tool-*.tsx
+  - src/components/*tool*.tsx
+
+# 卡片组件
+卡片组件:
+  - src/components/card.tsx
+  - src/components/tool-card.tsx
+
+# 警告组件
+警告组件:
+  - src/components/alert*.tsx
+  - src/components/ui/alert*.tsx
+
+# 下拉菜单组件
+下拉菜单:
+  - src/components/dropdown*.tsx
+  - src/components/ui/dropdown*.tsx
+
+# 滚动区域组件
+滚动区域:
+  - src/components/scroll*.tsx
+  - src/components/ui/scroll*.tsx
+
+# 标签组件
+标签组件:
+  - src/components/label*.tsx
+  - src/components/ui/label*.tsx
+
+# 比较组件
+比较组件:
+  - src/components/*compare*.tsx
+
+# 裁剪组件
+裁剪组件:
+  - src/components/*crop*.tsx
+
+# 拼接组件
+拼接组件:
+  - src/components/*stitch*.tsx
+
+# 模型选择组件
+模型选择:
+  - src/components/model-*.tsx
+  - src/components/*model*.tsx
+
+# 尺寸调整组件
+尺寸调整:
+  - src/components/size-*.tsx
+  - src/components/*size*.tsx
+  - src/components/scale-*.tsx
+  - src/components/*scale*.tsx
+
+# 比例调整组件
+比例调整:
+  - src/components/ratio-*.tsx
+  - src/components/*ratio*.tsx
+
+# 描述组件
+描述组件:
+  - src/components/descript*.tsx
+  - src/components/md-*.tsx
+
+# 字符/角色组件
+字符组件:
+  - src/components/character*.tsx
+
+# 加载组件
+加载组件:
+  - src/components/loading*.tsx
+
+# 页脚组件
+页脚组件:
+  - src/components/footer*.tsx
+
+# 提示栏组件
+提示组件:
+  - src/components/prompt*.tsx
+  - src/components/alert-bar.tsx
+  - src/components/prompt-bar.tsx
+
+# 确认组件
+确认组件:
+  - src/components/confirm*.tsx

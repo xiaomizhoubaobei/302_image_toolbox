@@ -1,0 +1,250 @@
+name: 构建、签名并发布 Docker 镜像
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-sign:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    # 仅在 PR 被合并时或推送标签时运行
+    if: github.event.pull_request.merged == true || startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout 代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 获取 PR 信息 (仅在 PR 合并时)
+        if: github.event.pull_request.merged == true
+        id: pr_info
+        run: |
+          # 获取 PR 号码
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          
+          # 获取 PR 标题作为 Release 标题
+          PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_OUTPUT
+          
+          # 获取 PR 描述作为 Release 内容
+          PR_BODY=$(echo "${{ github.event.pull_request.body }}" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+          echo "PR_BODY=$PR_BODY" >> $GITHUB_OUTPUT
+
+      - name: 获取版本信息 (仅在推送标签时)
+        if: startsWith(github.ref, 'refs/tags/')
+        id: tag_info
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: 从 package.json 获取版本号
+        id: package_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: 设置 Node.js (仅在推送标签时)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 安装 Cosign
+        uses: sigstore/cosign-installer@v3.10.0
+
+      - name: 设置 QEMU
+        uses: docker/setup-qemu-action@v3.6.0
+
+      - name: 设置 Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
+      - name: 登录到 Docker Hub
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 登录到 GitHub Container Registry
+        uses: docker/login-action@v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 提取元数据 (tags, labels) 用于 Docker
+        id: meta
+        uses: docker/metadata-action@v5.7.0
+        with:
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=${{ steps.package_version.outputs.VERSION }}
+
+      - name: 构建并推送 Docker 镜像
+        id: build-and-push
+        uses: docker/build-push-action@v6.18.0
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: 为镜像签名 (keyless)
+        run: |
+          images=""
+          for tag in ${TAGS}; do
+            images+="${tag}@${DIGEST} "
+          done
+          cosign sign --yes ${images}
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+
+      - name: 创建 Release (仅在 PR 合并时)
+        if: github.event.pull_request.merged == true
+        id: create_pr_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: pr-${{ steps.pr_info.outputs.PR_NUMBER }}-${{ github.sha }}
+          release_name: PR #${{ steps.pr_info.outputs.PR_NUMBER }} - ${{ steps.pr_info.outputs.PR_TITLE }}
+          body: |
+            ## PR 信息
+            - 标题: ${{ steps.pr_info.outputs.PR_TITLE }}
+            - 编号: #${{ steps.pr_info.outputs.PR_NUMBER }}
+            - 作者: ${{ github.event.pull_request.user.login }}
+            
+            ## PR 描述
+            ${{ steps.pr_info.outputs.PR_BODY }}
+            
+            ## Docker 镜像
+            
+            此 PR 的 Docker 镜像已构建并推送到以下注册表：
+            - Docker Hub: `${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox:pr-${{ steps.pr_info.outputs.PR_NUMBER }}`
+            - GitHub Container Registry: `ghcr.io/${{ github.repository }}:pr-${{ steps.pr_info.outputs.PR_NUMBER }}`
+            
+            ## 镜像签名验证
+            
+            所有 Docker 镜像均已使用 Cosign 进行签名。您可以使用以下命令验证签名：
+            
+            ```bash
+            cosign verify ${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox:pr-${{ steps.pr_info.outputs.PR_NUMBER }} \
+              --certificate-identity https://github.com/${{ github.repository }}/.github/workflows/build-and-sign.yml@refs/heads/main \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com
+            ```
+            
+            ```bash
+            cosign verify ghcr.io/${{ github.repository }}:pr-${{ steps.pr_info.outputs.PR_NUMBER }} \
+              --certificate-identity https://github.com/${{ github.repository }}/.github/workflows/build-and-sign.yml@refs/heads/main \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com
+            ```
+          draft: false
+          prerelease: false
+
+      - name: 创建 Release (仅在推送标签时)
+        if: startsWith(github.ref, 'refs/tags/')
+        id: create_tag_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release v${{ steps.tag_info.outputs.VERSION }}
+          body: |
+            ## 发布信息
+            
+            版本: v${{ steps.tag_info.outputs.VERSION }}
+            发布时间: $(date -u)
+            
+            ## Docker 镜像
+            
+            此版本的 Docker 镜像已构建并推送到以下注册表：
+            - Docker Hub: `${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox:v${{ steps.tag_info.outputs.VERSION }}`
+            - GitHub Container Registry: `ghcr.io/${{ github.repository }}:v${{ steps.tag_info.outputs.VERSION }}`
+            
+            ## 镜像签名验证
+            
+            所有 Docker 镜像均已使用 Cosign 进行签名。您可以使用以下命令验证签名：
+            
+            ```bash
+            cosign verify ${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox:v${{ steps.tag_info.outputs.VERSION }} \
+              --certificate-identity https://github.com/${{ github.repository }}/.github/workflows/build-and-sign.yml@refs/tags/v${{ steps.tag_info.outputs.VERSION }} \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com
+            ```
+            
+            ```bash
+            cosign verify ghcr.io/${{ github.repository }}:v${{ steps.tag_info.outputs.VERSION }} \
+              --certificate-identity https://github.com/${{ github.repository }}/.github/workflows/build-and-sign.yml@refs/tags/v${{ steps.tag_info.outputs.VERSION }} \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com
+            ```
+          draft: false
+          prerelease: false
+
+      - name: 上传签名证据文件 (仅在 PR 合并时)
+        if: github.event.pull_request.merged == true
+        run: |
+          # 为每个镜像创建签名证据文件
+          TAGS_ARRAY=(${TAGS})
+          for tag in "${TAGS_ARRAY[@]}"; do
+            # 创建证据文件
+            echo "镜像: $tag@${DIGEST}" > signature-evidence-$tag.txt
+            echo "签名时间: $(date -u)" >> signature-evidence-$tag.txt
+            echo "工作流: ${{ github.workflow }}" >> signature-evidence-$tag.txt
+            echo "运行ID: ${{ github.run_id }}" >> signature-evidence-$tag.txt
+            echo "签名者: https://token.actions.githubusercontent.com" >> signature-evidence-$tag.txt
+            echo "PR编号: ${{ steps.pr_info.outputs.PR_NUMBER }}" >> signature-evidence-$tag.txt
+            echo "PR标题: ${{ steps.pr_info.outputs.PR_TITLE }}" >> signature-evidence-$tag.txt
+            echo "Package版本: ${{ steps.package_version.outputs.VERSION }}" >> signature-evidence-$tag.txt
+            
+            # 上传证据文件作为 Release 资产
+            asset_name="signature-evidence-$(echo $tag | sed 's/[\/:]/_/g').txt"
+            gh release upload pr-${{ steps.pr_info.outputs.PR_NUMBER }}-${{ github.sha }} signature-evidence-$tag.txt --name $asset_name
+          done
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 上传签名证据文件 (仅在推送标签时)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          # 为每个镜像创建签名证据文件
+          TAGS_ARRAY=(${TAGS})
+          for tag in "${TAGS_ARRAY[@]}"; do
+            # 创建证据文件
+            echo "镜像: $tag@${DIGEST}" > signature-evidence-$tag.txt
+            echo "签名时间: $(date -u)" >> signature-evidence-$tag.txt
+            echo "工作流: ${{ github.workflow }}" >> signature-evidence-$tag.txt
+            echo "运行ID: ${{ github.run_id }}" >> signature-evidence-$tag.txt
+            echo "签名者: https://token.actions.githubusercontent.com" >> signature-evidence-$tag.txt
+            echo "版本: v${{ steps.tag_info.outputs.VERSION }}" >> signature-evidence-$tag.txt
+            echo "Package版本: ${{ steps.package_version.outputs.VERSION }}" >> signature-evidence-$tag.txt
+            
+            # 上传证据文件作为 Release 资产
+            asset_name="signature-evidence-$(echo $tag | sed 's/[\/:]/_/g').txt"
+            gh release upload ${{ steps.tag_info.outputs.TAG }} signature-evidence-$tag.txt --name $asset_name
+          done
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,74 @@
+name: 根据关闭的 Issue 自动关闭相关 PR
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  close_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检查关联的拉取请求
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const issueBody = context.payload.issue.body || '';
+            
+            // 用于存储关联的 PR 编号
+            const linkedPRs = [];
+            
+            // 获取所有开放状态的拉取请求
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+            
+            // 检查每个 PR 是否引用了已关闭的 Issue
+            for (const pr of pullRequests) {
+              const prBody = pr.body || '';
+              const prTitle = pr.title || '';
+              
+              // 检查 PR 标题或描述是否引用了已关闭的 Issue
+              if (
+                prBody.includes(`Closes #${issueNumber}`) || 
+                prBody.includes(`Close #${issueNumber}`) || 
+                prBody.includes(`Closes ${context.repo.owner}/${context.repo.repo}#${issueNumber}`) ||
+                prBody.includes(`Fixes #${issueNumber}`) || 
+                prBody.includes(`Fix #${issueNumber}`) ||
+                prTitle.includes(`Closes #${issueNumber}`) || 
+                prTitle.includes(`Close #${issueNumber}`) || 
+                prTitle.includes(`Fixes #${issueNumber}`) || 
+                prTitle.includes(`Fix #${issueNumber}`)
+              ) {
+                linkedPRs.push(pr.number);
+              }
+            }
+            
+            // 关闭关联的拉取请求
+            for (const prNumber of linkedPRs) {
+              console.log(`正在关闭 PR #${prNumber}，因为它关联了已关闭的 Issue #${issueNumber}`);
+              
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                state: 'closed'
+              });
+              
+              // 添加评论说明关闭原因
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `此拉取请求已被自动关闭，因为关联的 Issue #${issueNumber} 已被关闭。`
+              });
+            }
+            
+            if (linkedPRs.length === 0) {
+              console.log('未找到与此 Issue 关联的拉取请求。');
+            } else {
+              console.log(`已关闭 ${linkedPRs.length} 个与 Issue #${issueNumber} 关联的拉取请求`);
+            }
