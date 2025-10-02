@@ -20,17 +20,22 @@ export default class ImageManager {
             return reject(new Error('Failed to get 2D context'));
           }
 
-          const ratio = img.width / img.height;
           let width = img.width;
           let height = img.height;
 
-          while ((width * height * 4) / (1024 * 1024) > maxSizeMB) {
-            width /= 1.1;
-            height /= 1.1;
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
+          // 更高效的尺寸调整算法
+          const targetSize = maxSizeMB * 1024 * 1024;
+          let currentSize = (width * height * 4) / (1024 * 1024);
+          
+          while (currentSize > maxSizeMB) {
+            width = Math.floor(width * 0.9);
+            height = Math.floor(height * 0.9);
+            currentSize = (width * height * 4) / (1024 * 1024);
           }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
 
           canvas.toBlob((compressedBlob) => {
             if (compressedBlob) {
@@ -42,6 +47,7 @@ export default class ImageManager {
         };
 
         img.onerror = reject;
+        // 添加错误处理
         img.src = String(reader.result);
       };
 
@@ -70,14 +76,17 @@ export default class ImageManager {
           return reject(new Error('Failed to get 2D context'));
         }
 
-        const ratio = img.width / img.height;
         let width = img.width;
         let height = img.height;
 
-        // 调整图片尺寸，以确保符合最大大小
-        while ((width * height * 4) / (1024 * 1024) > maxSizeMB) {
-          width /= 1.1;
-          height /= 1.1;
+        // 更高效的尺寸调整算法
+        const targetSize = maxSizeMB * 1024 * 1024;
+        let currentSize = (width * height * 4) / (1024 * 1024);
+        
+        while (currentSize > maxSizeMB) {
+          width = Math.floor(width * 0.9);
+          height = Math.floor(height * 0.9);
+          currentSize = (width * height * 4) / (1024 * 1024);
         }
 
         canvas.width = width;
@@ -87,7 +96,7 @@ export default class ImageManager {
         canvas.toBlob((blob) => {
           if (blob) {
             // 再次调整质量，确保符合最大大小
-            if (blob.size > maxSizeMB * 1024 * 1024) {
+            if (blob.size > targetSize) {
               return this.compressImageBlob(blob, maxSizeMB, mimeType, quality).then(resolve, reject);
             }
             resolve(blob);
@@ -97,6 +106,7 @@ export default class ImageManager {
         }, mimeType, quality);
       };
 
+      img.onerror = reject;
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -106,6 +116,11 @@ export default class ImageManager {
   // 下载图片为文件
   static imageToFile = async (url: string) => {
     try {
+      // 添加缓存检查
+      if (!url || url === '') {
+        throw new Error('Invalid URL');
+      }
+      
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(`Get origin image error: ${res.statusText}`);
@@ -172,17 +187,22 @@ export default class ImageManager {
   static pngToJpg = async (url: string) => {
     return new Promise((resolve, reject) => {
       const image = new Image();
-      image.src = url;
+      image.crossOrigin = 'anonymous'; // 添加跨域支持
       image.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = image.width;
         canvas.height = image.height;
         const ctx = canvas.getContext('2d');
-        ctx?.drawImage(image, 0, 0);
-        const jpegData = canvas.toDataURL('image/jpeg');
-        resolve(jpegData);
+        if (ctx) {
+          ctx.drawImage(image, 0, 0);
+          const jpegData = canvas.toDataURL('image/jpeg', 0.9); // 设置质量为0.9
+          resolve(jpegData);
+        } else {
+          reject(new Error('Failed to get canvas context'));
+        }
       };
       image.onerror = reject;
+      image.src = url;
     });
   }
 
@@ -258,8 +278,13 @@ export default class ImageManager {
 
   // 加载图片
   static loadImage = async (src: string) => {
-    const img = new Image()
-    img.src = src
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'; // 添加跨域支持
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
   }
 
 }

@@ -24,7 +24,7 @@ interface PropsData {
   setPayload: (data: any) => void
 }
 
-// The polyfill for Safari browser. The dynamic require is needed to work with SSR
+// Safari浏览器的polyfill。动态require是为了与SSR配合使用
 if (typeof window !== 'undefined') {
   require('context-filter-polyfill');
 }
@@ -115,7 +115,7 @@ export const ImageEditor: React.FC<PropsData> = ({ src, setSrc, setPayload }) =>
       setSize({ width: img.width, height: img.height })
     }
     img.onerror = () => {
-      console.log('Load image error')
+      console.log('加载图像错误')
     }
   }, [src])
 
@@ -185,4 +185,3 @@ export const ImageEditor: React.FC<PropsData> = ({ src, setSrc, setPayload }) =>
     </div>
   );
 };
-

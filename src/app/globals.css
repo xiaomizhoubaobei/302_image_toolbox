@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     /* --background: 0 0% 100%; */
@@ -62,17 +60,18 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    /* 添加硬件加速优化 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
-
 
 /* loading */
 .loading-dots {
@@ -88,6 +87,9 @@
   background-color: #bbb;
   border-radius: 50%;
   animation: dotFlashing 0.6s infinite linear alternate;
+  /* 添加硬件加速 */
+  will-change: opacity, transform;
+  transform: translateZ(0);
 }
 
 .dot:nth-child(2) {
@@ -101,19 +103,22 @@
 @keyframes dotFlashing {
   0% {
     opacity: 0;
-		scale: 0.5;
+    transform: scale(0.5) translateZ(0);
   }
   50%,
   100% {
     opacity: 1;
+    transform: scale(1) translateZ(0);
   }
 }
-
 
 /* scan */
 .scan {
   width: 100%;
   height: 100%;
+  /* 添加硬件加速 */
+  transform: translateZ(0);
+  will-change: transform;
 }
 .scan::before {
   content: '';
@@ -126,11 +131,14 @@
   box-shadow: 0 0 70px 20px #fff;
   clip-path: inset(0);
   animation: x 0.75s ease-in-out infinite alternate, y 1.5s ease-in-out infinite;
+  /* 添加硬件加速 */
+  will-change: transform, clip-path;
+  transform: translateZ(0);
 }
 
 @keyframes x {
   to {
-    transform: translateX(-100%);
+    transform: translateX(-100%) translateZ(0);
     left: 100%;
   }
 }
@@ -147,7 +155,6 @@
   }
 }
 
-
 /* mosaic-bg */
 .mosaic-bg {
   background-position: 0px 0px, 60px 60px !important;
@@ -161,6 +168,9 @@
       #eee 100%
     ),
     linear-gradient(45deg, #eee 25%, white 25%, white 75%, #eee 75%, #eee 100%) !important;
+  /* 添加硬件加速 */
+  transform: translateZ(0);
+  will-change: background-position;
 }
 
 /* info */

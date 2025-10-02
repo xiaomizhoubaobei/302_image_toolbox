@@ -242,62 +242,62 @@ const ja: LocaleType = {
         {
           label: 'オートクチュールイラスト',
           value: 'Haute Couture Illustration',
-          icon: '/images/c01.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c01.png'
         },
         {
           label: 'シュールSFリアリズムイラスト',
           value: 'Surreal Sci-Fi Realism Illustration',
-          icon: '/images/c02.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c02.png'
         },
         {
           label: '白黒ブロック印刷',
           value: 'Black and White Blockprint',
-          icon: '/images/c03.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c03.png'
         },
         {
           label: 'ジェミニメ編集',
           value: 'Gemini Manga',
-          icon: '/images/c04.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c04.png'
         },
         {
           label: 'リトルティニーズブロック印刷',
           value: 'Little Tinies Blockprint',
-          icon: '/images/c05.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c05.png'
         },
         {
           label: 'ポップアートイラスト',
           value: 'Pop Art Illustration',
-          icon: '/images/c06.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c06.png'
         },
         {
           label: 'ポイントイラスト',
           value: 'The Point Illustration',
-          icon: '/images/c07.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c07.png'
         },
         {
           label: 'ソフトフォーカス3D',
           value: 'Soft Focus 3D',
-          icon: '/images/c08.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c08.png'
         },
         {
           label: 'ペイントイラスト',
           value: 'Painted Illustration',
-          icon: '/images/c09.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c09.png'
         },
         {
           label: 'カラフルコミック',
           value: 'Colorful Comicbook',
-          icon: '/images/c10.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c10.png'
         },
         {
           label: 'ボールドラインアート',
           value: 'Bold Lineart',
-          icon: '/images/c11.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c11.png'
         },
         {
           label: 'ソフトアニメイラスト',
           value: 'Soft Anime Illustration',
-          icon: '/images/c12.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c12.png'
         },
       ]
     },

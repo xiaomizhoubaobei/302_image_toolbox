@@ -54,7 +54,7 @@ export function SideSheet({ status, tools, tool, setTool, file, setFile }: Props
         <SheetHeader>
           <SheetTitle>
             <div className="w-full flex items-center justify-center space-x-2 py-2">
-              <Image width={32} height={32} alt="logo" src="/logo.png"></Image>
+              <Image width={32} height={32} alt="logo" src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/logo.png"></Image>
               <p className='font-medium text-xl md:text-2xl'>{Locale.Photo.Title}</p>
             </div>
           </SheetTitle>

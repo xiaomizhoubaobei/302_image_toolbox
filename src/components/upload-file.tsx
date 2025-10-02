@@ -2,9 +2,17 @@
 
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { twMerge } from 'tailwind-merge'
-import DropZone from './drop-zone'
+import dynamic from 'next/dynamic'
 import { RiUpload2Line } from "react-icons/ri";
 import Locale from "@/locales"
+
+// 动态导入 DropZone 组件
+const DropZone = dynamic(() => import('./drop-zone'), {
+  ssr: false,
+  loading: () => <div className="bg-primary opacity-60 rounded-2xl p-4 w-full h-48 flex items-center justify-center">
+    <div className="text-white">Loading drop zone...</div>
+  </div>
+})
 
 const ALLOWED_FILES = ['image/png', 'image/jpeg', 'image/webp'];
 
@@ -27,6 +35,12 @@ const UploadFile = forwardRef(({ file, setFile }: UplodFileProps, ref: any) => {
     )[0]
 
     if (file) {
+      // 检查文件大小，如果过大则压缩
+      if (file.size > 10 * 1024 * 1024) { // 10MB
+        // 显示提示信息
+        alert('File size exceeds 10MB. The file will be compressed automatically.')
+      }
+      
       if (setFile) {
         setFile(file)
       }

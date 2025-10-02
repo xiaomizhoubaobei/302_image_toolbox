@@ -24,7 +24,7 @@ export function Footer() {
               Powered By
             </div>
             <div className="banner flex items-center">
-              <Image width={50} height={14} src="/banner.png" alt="" />
+              <Image width={50} height={14} src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/banner.png" alt="" />
             </div>
           </a>
         </div>

@@ -240,62 +240,62 @@ const zh = {
         {
           label: '高级定制插图',
           value: 'Haute Couture Illustration',
-          icon: '/images/c01.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c01.png'
         },
         {
           label: '超现实科幻插图',
           value: 'Surreal Sci-Fi Realism Illustration',
-          icon: '/images/c02.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c02.png'
         },
         {
           label: '黑白木刻版画',
           value: 'Black and White Blockprint',
-          icon: '/images/c03.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c03.png'
         },
         {
           label: '双子座漫画',
           value: 'Gemini Manga',
-          icon: '/images/c04.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c04.png'
         },
         {
           label: '小微木刻版画',
           value: 'Little Tinies Blockprint',
-          icon: '/images/c05.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c05.png'
         },
         {
           label: '波普艺术插图',
           value: 'Pop Art Illustration',
-          icon: '/images/c06.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c06.png'
         },
         {
           label: '点插图',
           value: 'The Point Illustration',
-          icon: '/images/c07.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c07.png'
         },
         {
           label: '柔焦3D',
           value: 'Soft Focus 3D',
-          icon: '/images/c08.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c08.png'
         },
         {
           label: '绘画插图',
           value: 'Painted Illustration',
-          icon: '/images/c09.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c09.png'
         },
         {
           label: '彩色漫画',
           value: 'Colorful Comicbook',
-          icon: '/images/c10.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c10.png'
         },
         {
           label: '粗线条',
           value: 'Bold Lineart',
-          icon: '/images/c11.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c11.png'
         },
         {
           label: '柔和动漫插图',
           value: 'Soft Anime Illustration',
-          icon: '/images/c12.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c12.png'
         },
       ]
     },
