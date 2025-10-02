@@ -39,16 +39,16 @@ export const Navigation: FC<Props> = ({
   };
 
   const onLoadImage = (event: ChangeEvent<HTMLInputElement>) => {
-    // Reference to the DOM input element
+    // 获取DOM输入元素的引用
     const { files } = event.target;
 
-    // Ensure that you have a file before attempting to read it
+    // 确保在尝试读取文件之前有文件存在
     if (files && files[0]) {
       if (onUpload) {
         onUpload(URL.createObjectURL(files[0]));
       }
     }
-    // Clear the event target value to give the possibility to upload the same image:
+    // 清除事件目标值以允许重新上传相同图片
     event.target.value = "";
   };
 

@@ -59,7 +59,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
     }
   }, [status, setFile])
 
-  // Create Image
+  // 创建图像
   const handleOngenerateImage = async (src: string, action: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -88,7 +88,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
     })
   }
 
-  // Create Video
+  // 创建视频
   const handleOngenerateVideo = async (src: string, action: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -115,7 +115,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
     })
   }
 
-  // Read Text
+  // 读取文本
   const handleOngenerateText = async (src: string, action: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -160,7 +160,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
       <div className="hidden md:block left w-[310px] h-full shadow-2xl">
         <div className="sider-bar w-[310px] h-full p-4 bg-white flex flex-col">
           <div className="w-full flex items-center justify-center space-x-2 py-2">
-            <Image width={32} height={32} alt="logo" src="/logo.png"></Image>
+            <Image width={32} height={32} alt="logo" src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/logo.png"></Image>
             <p className='font-medium text-xl md:text-2xl'>{Locale.Photo.Title}</p>
           </div>
           <div className="grow relative mt-2">

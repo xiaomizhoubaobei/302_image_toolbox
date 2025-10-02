@@ -1,10 +1,10 @@
 // 'use client'
 import React from 'react'
 import Image from 'next/image'
-import UploadFile from '@/components/upload-file'
+import dynamic from 'next/dynamic'
 import ToolCard from '@/components/tool-card'
 import { HistoryModal } from "@/components/history-modal";
-import { LangMenu } from '@/components/lang-menu';
+import { LangMenu } from '@/components/lang-menu'
 import { RatioModal } from '@/components/ratio-modal'
 import { ModelSelecter } from '@/components/model-selecter'
 import { Tool } from '@/types'
@@ -14,6 +14,14 @@ import { Button } from '@/components/ui/button'
 import Loading from '@/components/loading'
 import { textToImage } from '@/lib/api'
 import ImageManager from '@/utils/Image'
+
+// 动态导入 UploadFile 组件
+const UploadFile = dynamic(() => import('@/components/upload-file'), {
+  ssr: false,
+  loading: () => <div className="bg-primary opacity-60 rounded-3xl p-4 w-full h-48 flex items-center justify-center">
+    <div className="text-white">Loading upload component...</div>
+  </div>
+})
 
 const tools = Locale.Photo.Tool.list
 
@@ -77,7 +85,7 @@ function PhotoshowLand({ setTool, file, setFile }: PropsData) {
     <div id="photoshow-land" className='max-w-screen-sm mx-auto'>
       <section className="title flex justify-center py-8 mt-8">
         <div className='flex items-center space-x-2'>
-          <Image src="/logo.png" alt="logo" width={50} height={50}></Image>
+          <Image src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/logo.png" alt="logo" width={50} height={50}></Image>
           <h2 className='font-medium text-2xl md:text-4xl'>{Locale.Photo.Title}</h2>
         </div>
       </section>
