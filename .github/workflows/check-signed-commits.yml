@@ -1,0 +1,45 @@
+name: 检查 PR 签名提交
+
+on:
+  pull_request_target
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-signed-commits:
+    name: 检查 PR 签名提交
+    runs-on: ubuntu-latest
+    steps:
+      - name: 加固运行器（审计所有出站调用）
+            uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+            with:
+              egress-policy: audit      - name: 检查 PR 签名提交
+        uses: 1Password/check-signed-commits-action@ed2885f3ed2577a4f5d3c3fe895432a557d23d52 # v1.2.0
+        with:
+          comment: |
+            ⚠️ 此 PR 包含未签名的提交
+
+            为了确保代码的可追溯性和安全性，我们要求所有提交都必须经过签名。
+
+            **如何签名提交：**
+
+            1. 配置 Git 签名：
+               ```bash
+               git config --global commit.gpgsign true
+               git config --global gpg.program gpg2
+               ```
+
+            2. 关联 GPG 密钥到 GitHub：
+               - 列出密钥：`gpg --list-secret-keys --keyid-format LONG`
+               - 导出公钥：`gpg --armor --export <KEY_ID>`
+               - 在 GitHub Settings -> SSH and GPG keys 中添加 GPG key
+
+            3. 对现有提交进行签名（如果需要）：
+               ```bash
+               git commit --amend --no-edit --signoff
+               git push --force
+               ```
+
+            请修复未签名的提交后重新提交此 PR。

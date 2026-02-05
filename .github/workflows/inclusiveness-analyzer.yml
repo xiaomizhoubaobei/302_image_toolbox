@@ -1,0 +1,25 @@
+# 此工作流检出代码并扫描上次提交中更改或添加的内容，
+# 查找冒犯性/排他性术语。
+# 扫描将提供关于发现的术语和可以使用的替代术语的上下文。
+
+name: 包容性分析扫描
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+  workflow_dispatch:
+
+jobs:
+  Inclusiveness-Analyser-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 加固运行器（审计所有出站调用）
+        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+        with:
+          egress-policy: audit
+      - name: 检出代码
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: 包容性分析器
+        uses: microsoft/InclusivenessAnalyzer@994519a4cd1f0ccc7415fff13b7f287344c420bc # v1.0.1

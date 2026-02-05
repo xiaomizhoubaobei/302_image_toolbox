@@ -1,0 +1,86 @@
+# 此工作流使用的操作未经 GitHub 认证。它们由
+# 第三方提供，并受单独的
+# 服务条款、隐私政策和支持
+# 文档约束。
+
+name: 供应链安全评分
+on:
+  # 用于分支保护检查。仅支持默认分支。参见
+  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
+  branch_protection_rule:
+  # 确保 Maintained 检查偶尔更新。参见
+  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
+  schedule:
+    - cron: '35 9 * * 0'
+  push:
+    branches: [ "main" ]
+
+# 声明默认权限为只读。
+permissions: read-all
+
+jobs:
+  analysis:
+    name: Scorecard analysis
+    runs-on: ubuntu-latest
+    # `publish_results: true` 仅在从默认分支运行时有效。如果禁用，可以删除此条件。
+    if: github.event.repository.default_branch == github.ref_name || github.event_name == 'pull_request'
+    permissions:
+      # 需要此权限将结果上传到代码扫描仪表板。
+      security-events: write
+      # 需要此权限发布结果并获取徽章（参见下方的 publish_results）。
+      id-token: write
+      # 如果在私有仓库中安装，请取消注释以下权限。
+      # contents: read
+      # actions: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+        with:
+          egress-policy: audit
+
+      - name: "Checkout code"
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: "Run analysis"
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          # (可选) "write" PAT 令牌。如果满足以下条件，请取消注释 `repo_token` 行：
+          # - 您希望在*公共*仓库上启用分支保护检查，或
+          # - 您正在*私有*仓库上安装 Scorecard
+          # 要创建 PAT，请按照 https://github.com/ossf/scorecard-action?tab=readme-ov-file#authentication-with-fine-grained-pat-optional 中的步骤操作。
+          # repo_token: ${{ secrets.SCORECARD_TOKEN }}
+
+          # 公共仓库：
+          #   - 将结果发布到 OpenSSF REST API，方便使用者访问
+          #   - 允许仓库包含 Scorecard 徽章。
+          #   - 参见 https://github.com/ossf/scorecard-action#publishing-results。
+          # 对于私有仓库：
+          #   - `publish_results` 将始终设置为 `false`，
+          #     无论在此处输入的值如何。
+          publish_results: true
+          # 使用 OIDC 进行身份验证（无需手动登录）
+          use_oidc: true
+
+          # (可选) 如果您有标记为 export-ignore 的文件的 .gitattributes，请取消注释 file_mode
+          # file_mode: git
+
+      # 将结果作为构件上传（可选）。注释掉将禁用运行结果以 SARIF
+      # 格式上传到仓库 Actions 标签页。
+      - name: "上传构件"
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: SARIF file
+          path: results.sarif
+          retention-days: 5
+
+      # 将结果上传到 GitHub 的代码扫描仪表板（可选）。
+      # 注释掉将禁用结果上传到您的仓库代码扫描仪表板
+      - name: "上传到代码扫描"
+        uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
+        with:
+          sarif_file: results.sarif
