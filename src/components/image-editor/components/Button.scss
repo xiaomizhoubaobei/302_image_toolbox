@@ -1,0 +1,51 @@
+/**
+ * @fileoverview 图像编辑器按钮组件样式
+ * @author 祁筱欣
+ * @date 2026-02-06
+ * @since 2026-02-06
+ * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @LICENSE AGPL-3.0 license
+ * @remark 本样式文件定义了图像编辑器按钮组件的样式规则。
+ *          该组件提供以下样式功能：
+ *          - 圆形按钮样式（36px x 36px）
+ *          - 激活状态样式
+ *          - 悬停和焦点状态样式
+ *          - 响应式设计（小屏幕 32px x 32px）
+ *
+ *          样式说明：
+ *          - image-editor-button: 基础按钮样式
+ *          - image-editor-button--active: 激活状态
+ *          - 悬停/焦点状态：半透明背景
+ *          - 响应式断点：540px
+ *
+ *          依赖关系：
+ *          - 被 Button.tsx 组件引用
+ */
+
+.image-editor-button {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: transparent;
+	fill: #88888b;
+	transition: 0.5s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	color: currentColor;
+	padding: 0;
+	&--active {
+		// background: rgba(white, 0.03);
+		fill: currentColor;
+	}
+	&:hover, &:focus {
+		background: rgba(white, 0.03);
+	}
+	@media (max-width: 540px) {
+		width: 32px;
+		height: 32px;
+	}
+}

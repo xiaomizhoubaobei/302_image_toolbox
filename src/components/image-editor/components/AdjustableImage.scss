@@ -1,0 +1,24 @@
+/**
+ * @fileoverview 可调节图像组件样式
+ * @author 祁筱欣
+ * @date 2026-02-06
+ * @since 2026-02-06
+ * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @LICENSE AGPL-3.0 license
+ * @remark 本样式文件定义了可调节图像组件的样式规则。
+ *          该组件提供以下样式功能：
+ *          - 隐藏原始图片元素（仅显示 canvas）
+ *          - 确保 canvas 元素正确显示
+ *          - 支持自定义类名扩展
+ *
+ *          样式说明：
+ *          - adjustable-image-source: 隐藏原始 img 元素
+ *          - adjustable-image-element: canvas 元素的基础样式
+ *
+ *          依赖关系：
+ *          - 被 AdjustableImage.tsx 组件引用
+ */
+
+.adjustable-image-source {
+	display: none;
+}
