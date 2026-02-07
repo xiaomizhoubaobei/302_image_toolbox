@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185 185" width="24" height="24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: currentColor;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M172,13V172H13V13H172m6-13H7C3.13,0,0,3.13,0,7V178c0,3.87,3.13,7,7,7H178c3.87,0,7-3.13,7-7V7c0-3.87-3.13-7-7-7h0Z"/>
+  <rect class="cls-1" x="38" y="41" width="109" height="15" rx="7.5" ry="7.5"/>
+  <rect class="cls-1" x="43" y="86" width="99" height="15" rx="7.5" ry="7.5" transform="translate(186 1) rotate(90)"/>
+</svg>
