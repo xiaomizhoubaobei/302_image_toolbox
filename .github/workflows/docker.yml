@@ -1,149 +1,149 @@
-# name: Docker 镜像构建与推送
+name: Docker 镜像构建与推送
 
-# on:
-#     push:
-#         branches:
-#             - main
-#         paths:
-#             - "src/**"
-#             - "Dockerfile"
-#     workflow_dispatch:
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - "src/**"
+            - "Dockerfile"
+    workflow_dispatch:
 
-# permissions:
-#   contents: read
-#   packages: write
-#   id-token: write
-#   attestations: write
-#   artifact-metadata: write
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
-# jobs:
-#     build-and-push:
-#         runs-on: ubuntu-latest
-#         steps:
-#             - name: 加固运行器（审计所有出站调用）
-#               uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
-#               with:
-#                   egress-policy: audit
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 加固运行器（审计所有出站调用）
+              uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
+              with:
+                  egress-policy: audit
 
-#             - name: 检出代码
-#               uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+            - name: 检出代码
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-#             - name: 从 package.json 提取版本号
-#               id: version
-#               run: |
-#                   VERSION=$(node -p "require('./package.json').version")
-#                   echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-#                   echo "已提取版本: $VERSION"
+            - name: 从 package.json 提取版本号
+              id: version
+              run: |
+                  VERSION=$(node -p "require('./package.json').version")
+                  echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+                  echo "已提取版本: $VERSION"
 
-#             - name: 设置 Docker Buildx
-#               uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+            - name: 设置 Docker Buildx
+              uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-#             - name: 登录 DockerHub
-#               uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-#               with:
-#                   username: ${{ secrets.DOCKERHUB_USERNAME }}
-#                   password: ${{ secrets.DOCKERHUB_TOKEN }}
+            - name: 登录 DockerHub
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-#             - name: 登录 GitHub 容器注册表
-#               uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-#               with:
-#                   registry: ghcr.io
-#                   username: ${{ github.actor }}
-#                   password: ${{ secrets.GITHUB_TOKEN }}
+            - name: 登录 GitHub 容器注册表
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
 
-#             - name: 登录阿里云容器注册表
-#               uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-#               with:
-#                   registry: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com
-#                   username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
-#                   password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+            - name: 登录阿里云容器注册表
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              with:
+                  registry: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com
+                  username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
+                  password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
 
-#             - name: 提取依赖版本
-#               id: deps
-#               run: |
-#                   NODE_VERSION=$(node -p "require('./package.json').devDependencies['@types/node'].replace('^', '')")
-#                   NEXTJS_VERSION=$(node -p "require('./package.json').dependencies.next.replace('^', '')")
-#                   YARN_VERSION=$(node -p "require('./package.json').packageManager.replace('yarn@', '')")
-#                   TYPESCRIPT_VERSION=$(node -p "require('./package.json').devDependencies.typescript.replace('^', '')")
-#                   echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_OUTPUT
-#                   echo "NEXTJS_VERSION=$NEXTJS_VERSION" >> $GITHUB_OUTPUT
-#                   echo "YARN_VERSION=$YARN_VERSION" >> $GITHUB_OUTPUT
-#                   echo "TYPESCRIPT_VERSION=$TYPESCRIPT_VERSION" >> $GITHUB_OUTPUT
-#                   echo "Node: $NODE_VERSION, Next.js: $NEXTJS_VERSION, Yarn: $YARN_VERSION, TypeScript: $TYPESCRIPT_VERSION"
+            - name: 提取依赖版本
+              id: deps
+              run: |
+                  NODE_VERSION=$(node -p "require('./package.json').devDependencies['@types/node'].replace('^', '')")
+                  NEXTJS_VERSION=$(node -p "require('./package.json').dependencies.next.replace('^', '')")
+                  YARN_VERSION=$(node -p "require('./package.json').packageManager.replace('yarn@', '')")
+                  TYPESCRIPT_VERSION=$(node -p "require('./package.json').devDependencies.typescript.replace('^', '')")
+                  echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_OUTPUT
+                  echo "NEXTJS_VERSION=$NEXTJS_VERSION" >> $GITHUB_OUTPUT
+                  echo "YARN_VERSION=$YARN_VERSION" >> $GITHUB_OUTPUT
+                  echo "TYPESCRIPT_VERSION=$TYPESCRIPT_VERSION" >> $GITHUB_OUTPUT
+                  echo "Node: $NODE_VERSION, Next.js: $NEXTJS_VERSION, Yarn: $YARN_VERSION, TypeScript: $TYPESCRIPT_VERSION"
 
-#             - name: Docker 元数据
-#               id: meta
-#               uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
-#               with:
-#                 images: |
-#                   ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
-#                   ghcr.io/${{ github.repository }}/302_llm_playground
-#                   crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
-#                 # 关闭所有默认生成器
-#                 flavor: |
-#                   latest=false
-#                 # 只保留版本号标签
-#                 tags: |
-#                   type=raw,value=${{ steps.version.outputs.VERSION }}
+            - name: Docker 元数据
+              id: meta
+              uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+              with:
+                images: |
+                  ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
+                  ghcr.io/${{ github.repository }}/302_llm_playground
+                  crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
+                # 关闭所有默认生成器
+                flavor: |
+                  latest=false
+                # 只保留版本号标签
+                tags: |
+                  type=raw,value=${{ steps.version.outputs.VERSION }}
 
-#             - name: 构建并推送
-#               id: build
-#               uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
-#               with:
-#                 context: .
-#                 platforms: linux/amd64,linux/arm64
-#                 push: true
-#                 tags: ${{ steps.meta.outputs.tags }}
-#                 labels: |
-#                   org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/LLM-Playground
-#                   org.opencontainers.image.description=LLM Playground - 一个用于测试和实验大语言模型的交互式平台
-#                   org.opencontainers.image.licenses=AGPL-3.0
-#                   org.opencontainers.image.title=LLM Playground
-#                   org.opencontainers.image.maintainer=祁筱欣
-#                   org.opencontainers.image.version=${{ steps.version.outputs.VERSION }}
-#                   org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
-#                   org.opencontainers.image.revision=${{ github.sha }}
-#                   org.opencontainers.image.vendor=xiaomizhoubaobei
-#                   org.opencontainers.image.authors=qixiaoxin@stu.sqxy.edu.cn
-#                   build.url=https://github.com/xiaomizhoubaobei/LLM-Playground/actions/runs/${{ github.run_id }}
-#                   dependencies.node=${{ steps.deps.outputs.NODE_VERSION }}
-#                   org.opencontainers.image.nextjs=${{ steps.deps.outputs.NEXTJS_VERSION }}
-#                   org.opencontainers.image.yarn=${{ steps.deps.outputs.YARN_VERSION }}
-#                   org.opencontainers.image.typescript=${{ steps.deps.outputs.TYPESCRIPT_VERSION }}
-#                 cache-from: type=gha
-#                 cache-to: type=gha,mode=max
-#                 provenance: true
+            - name: 构建并推送
+              id: build
+              uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+              with:
+                context: .
+                platforms: linux/amd64,linux/arm64
+                push: true
+                tags: ${{ steps.meta.outputs.tags }}
+                labels: |
+                  org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/LLM-Playground
+                  org.opencontainers.image.description=LLM Playground - 一个用于测试和实验大语言模型的交互式平台
+                  org.opencontainers.image.licenses=AGPL-3.0
+                  org.opencontainers.image.title=LLM Playground
+                  org.opencontainers.image.maintainer=祁筱欣
+                  org.opencontainers.image.version=${{ steps.version.outputs.VERSION }}
+                  org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
+                  org.opencontainers.image.revision=${{ github.sha }}
+                  org.opencontainers.image.vendor=xiaomizhoubaobei
+                  org.opencontainers.image.authors=qixiaoxin@stu.sqxy.edu.cn
+                  build.url=https://github.com/xiaomizhoubaobei/LLM-Playground/actions/runs/${{ github.run_id }}
+                  dependencies.node=${{ steps.deps.outputs.NODE_VERSION }}
+                  org.opencontainers.image.nextjs=${{ steps.deps.outputs.NEXTJS_VERSION }}
+                  org.opencontainers.image.yarn=${{ steps.deps.outputs.YARN_VERSION }}
+                  org.opencontainers.image.typescript=${{ steps.deps.outputs.TYPESCRIPT_VERSION }}
+                cache-from: type=gha
+                cache-to: type=gha,mode=max
+                provenance: true
 
-#             - name: 安装 cosign
-#               uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+            - name: 安装 cosign
+              uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
 
-#             - name: 使用 cosign 签名镜像（无密钥模式）
-#               env:
-#                   COSIGN_EXPERIMENTAL: "1"
-#               run: |
-#                   echo "使用 cosign 无密钥模式签名镜像..."
-#                   while IFS= read -r tag; do
-#                       # 跳过阿里云 ACR 镜像（不支持签名）
-#                       if [[ "$tag" == *"crpi-"* ]]; then
-#                           echo "跳过阿里云 ACR 镜像: $tag"
-#                           continue
-#                       fi
-#                       echo "正在签名 $tag"
-#                       cosign sign --yes "$tag"
-#                   done <<< "${{ steps.meta.outputs.tags }}"
+            - name: 使用 cosign 签名镜像（无密钥模式）
+              env:
+                  COSIGN_EXPERIMENTAL: "1"
+              run: |
+                  echo "使用 cosign 无密钥模式签名镜像..."
+                  while IFS= read -r tag; do
+                      # 跳过阿里云 ACR 镜像（不支持签名）
+                      if [[ "$tag" == *"crpi-"* ]]; then
+                          echo "跳过阿里云 ACR 镜像: $tag"
+                          continue
+                      fi
+                      echo "正在签名 $tag"
+                      cosign sign --yes "$tag"
+                  done <<< "${{ steps.meta.outputs.tags }}"
 
-#             - name: 证明 DockerHub 镜像
-#               uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
-#               with:
-#                 subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
-#                 subject-digest: ${{ steps.build.outputs.digest }}
-#                 push-to-registry: true
+            - name: 证明 DockerHub 镜像
+              uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+              with:
+                subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
+                subject-digest: ${{ steps.build.outputs.digest }}
+                push-to-registry: true
 
-#             - name: 证明 GHCR 镜像
-#               uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
-#               with:
-#                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
-#                 subject-digest: ${{ steps.build.outputs.digest }}
-#                 push-to-registry: true
+            - name: 证明 GHCR 镜像
+              uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+              with:
+                subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
+                subject-digest: ${{ steps.build.outputs.digest }}
+                push-to-registry: true
 
             

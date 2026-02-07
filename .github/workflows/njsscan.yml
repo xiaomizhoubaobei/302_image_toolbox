@@ -34,13 +34,13 @@ jobs:
       with:
         egress-policy: audit
     - name: 检出代码
-      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
     - name: nodejsscan 扫描
       id: njsscan
       uses: ajinabraham/njsscan-action@231750a435d85095d33be7d192d52ec650625146
       with:
         args: '. --sarif --output results.sarif || true'
     - name: 上传 njsscan 报告
-      uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
+      uses: github/codeql-action/upload-sarif@45cbd0c69e560cd9e7cd7f8c32362050c9b7ded2 # v4.32.2
       with:
         sarif_file: results.sarif
