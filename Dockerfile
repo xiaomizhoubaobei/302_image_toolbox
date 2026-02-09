@@ -1,61 +1,76 @@
-# -------- 构建阶段 --------
-FROM node:20-alpine AS build
+# 基础镜像
+FROM --platform=$BUILDPLATFORM node:lts AS base
 
+LABEL org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/image_toolbox
+LABEL org.opencontainers.image.description="AI 图片工具箱 - 提供丰富的 AI 图片处理功能，支持链式操作"
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.title="AI 图片工具箱"
+LABEL org.opencontainers.image.maintainer="祁筱欣"
+LABEL org.opencontainers.image.version="0.0.1"
+LABEL org.opencontainers.image.created=${BUILD_DATE:-2025-12-30}
+LABEL org.opencontainers.image.revision=${VCS_REF:-latest}
+LABEL org.opencontainers.image.vendor=xiaomizhoubaobei
+LABEL org.opencontainers.image.authors=xiaomizhoubaobei
+LABEL build.url=https://github.com/xiaomizhoubaobei/image_toolbox/actions/runs/${RUN_ID}
+LABEL dependencies.node=${NODE_VERSION:-lts}
+LABEL org.opencontainers.image.nextjs=${NEXTJS_VERSION:-latest}
+LABEL org.opencontainers.image.yarn=${YARN_VERSION:-stable}
+LABEL org.opencontainers.image.typescript=${TYPESCRIPT_VERSION:-latest}
+LABEL org.opencontainers.image.provenance=enabled
+
+# 使用官方脚本安装yarn
+RUN corepack enable && corepack prepare yarn@stable --activate
+
+# 安装依赖
+FROM base AS deps
 WORKDIR /app
 
-# 安装原生模块 (sharp) 的依赖
-RUN apk add --no-cache \
-  g++ \
-  make \
-  python3 \
-  vips-dev
-
-# 复制包文件
+# 复制依赖文件
 COPY package.json yarn.lock ./
 
 # 使用 yarn 安装依赖
 RUN yarn install --frozen-lockfile
 
-# 复制源代码
-COPY . .
-
-# 构建应用程序
-RUN yarn build
-
-# -------- 生产镜像设置 --------
-FROM node:20-alpine AS production
-
-ENV NODE_ENV=production \
-  NODE_OPTIONS="--max-old-space-size=2048"
-
+# 构建阶段
+FROM base AS builder
 WORKDIR /app
 
-# 安装 sharp 的运行时依赖
-RUN apk add --no-cache \
-  vips
+# 复制依赖和源代码
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
-# 复制包文件
-COPY package.json yarn.lock ./
+# 使用 yarn 构建应用程序
+RUN yarn build
 
-# 仅安装生产依赖
-RUN yarn install --frozen-lockfile --production
+# 生产环境镜像
+FROM base AS runner
+WORKDIR /app
 
-# 从构建阶段复制构建产物
-COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static ./.next/static
-COPY --from=build /app/public ./public
+# 创建非root用户
+RUN groupadd --system --gid 1001 nodejs
+RUN useradd --system --uid 1001 --gid nodejs --home-dir /home/nextjs nextjs
+RUN mkdir -p /home/nextjs && chown nextjs:nodejs /home/nextjs
 
-# 创建非 root 用户以提高安全性
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 && \
-    chown -R nodejs:nodejs /app
+# 复制公共资源（如果存在）
+COPY --from=builder --chown=nextjs:nodejs /app/public ./
 
-USER nodejs
+# 设置预渲染缓存权限
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
+# 复制构建产物
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# 切换到非root用户
+USER nextjs
+
+# 暴露端口
 EXPOSE 3000
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+# 设置环境变量
+ENV PORT=3000
 
+
+# 启动命令（standalone模式）
 CMD ["node", "server.js"]

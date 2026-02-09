@@ -11,5 +11,6 @@
       </set>
     </option>
     <option name="fontSize" value="13.0" />
+    <option name="hideAutocompleteExclusionBanner" value="true" />
   </component>
 </project>

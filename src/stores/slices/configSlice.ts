@@ -14,16 +14,20 @@ type State = {
   region: number;
   domain: string;
   token: string;
+  giteeToken: string;
   user: string;
   code: string;
+  provider: '302ai' | 'giteeai';
 };
 
 type Actions = {
   setRegion: (region: number) => void;
   setDomain: (domain: string) => void;
   setToken: (token: string) => void;
+  setGiteeToken: (token: string) => void;
   setUser: (user: string) => void;
   setCode: (code: string) => void;
+  setProvider: (provider: '302ai' | 'giteeai') => void;
 };
 
 export type ConfigStore = State & Actions;
@@ -37,11 +41,15 @@ export const createConfigSlice: StateCreator<
   region: 1,
   domain: 'https://302.ai',
   token: '',
+  giteeToken: '',
   user: '',
   code: '',
+  provider: '302ai',
   setRegion: (region: number) => set({ region }),
   setDomain: (domain: string) => set({ domain }),
   setToken: (token: string) => set({ token }),
+  setGiteeToken: (token: string) => set({ giteeToken: token }),
   setUser: (user: string) => set({ user }),
   setCode: (code: string) => set({ code }),
+  setProvider: (provider: '302ai' | 'giteeai') => set({ provider }),
 });

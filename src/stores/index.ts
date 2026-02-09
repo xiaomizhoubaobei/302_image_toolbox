@@ -9,14 +9,29 @@
  */
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { createConfigSlice, ConfigStore } from "./slices/configSlice";
 
 // type StoreState = ChatStore & ConfigStore;
 type StoreState = ConfigStore;
 
 export const useStore = create<StoreState>()(
-  (...a) => ({
-    ...createConfigSlice(...a),
-  }),
+  persist(
+    (...a) => ({
+      ...createConfigSlice(...a),
+    }),
+    {
+      name: 'config-store',
+      partialize: (state) => ({
+        region: state.region,
+        domain: state.domain,
+        token: state.token,
+        giteeToken: state.giteeToken,
+        user: state.user,
+        code: state.code,
+        provider: state.provider,
+      }),
+    }
+  )
 );
 

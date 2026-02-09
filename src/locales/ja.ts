@@ -63,6 +63,9 @@ const ja: LocaleType = {
     InputCode: '以下に302.AIの公式API-KEYを入力してください',
     PlaceHolder: 'sk-xxxxxxxxxxxxxxxxx',
     Submit: '保存',
+    GiteeTitle: 'Gitee AI',
+    GiteeInputCode: '以下にGitee AIの公式API-KEYを入力してください',
+    GiteePlaceHolder: 'sk-xxxxxxxxxxxxxxxxx',
   },
   Footer: {
     Title: '内容はAI生成によるものであり、参考用です。',
@@ -351,6 +354,94 @@ const ja: LocaleType = {
           name: 'アートQRコード',
           value: 'qr-code',
         },
+        {
+          name: 'Gitee-Z-Image',
+          value: 'gitee-Z-Image',
+        },
+        {
+          name: 'Gitee-FLUX.2-klein-4B',
+          value: 'gitee-FLUX.2-klein-4B',
+        },
+        {
+          name: 'Gitee-FLUX.2-klein-9B',
+          value: 'gitee-FLUX.2-klein-9B',
+        },
+        {
+          name: 'Gitee-GLM-Image',
+          value: 'gitee-GLM-Image',
+        },
+        {
+          name: 'Gitee-Qwen-Image-2512',
+          value: 'gitee-Qwen-Image-2512',
+        },
+        {
+          name: 'Gitee-FLUX.2-dev',
+          value: 'gitee-FLUX.2-dev',
+        },
+        {
+          name: 'Gitee-LongCat-Image',
+          value: 'gitee-LongCat-Image',
+        },
+        {
+          name: 'Gitee-z-image-turbo',
+          value: 'gitee-z-image-turbo',
+        },
+        {
+          name: 'Gitee-Qwen-Image',
+          value: 'gitee-Qwen-Image',
+        },
+        {
+          name: 'Gitee-FLUX_1-Krea-dev',
+          value: 'gitee-FLUX_1-Krea-dev',
+        },
+        {
+          name: 'Gitee-CogView4_6B',
+          value: 'gitee-CogView4_6B',
+        },
+        {
+          name: 'Gitee-SD3.5-large',
+          value: 'gitee-stable-diffusion-3.5-large',
+        },
+        {
+          name: 'Gitee-FLUX.1-dev',
+          value: 'gitee-FLUX.1-dev',
+        },
+        {
+          name: 'Gitee-HiDream-I1-Full',
+          value: 'gitee-HiDream-I1-Full',
+        },
+        {
+          name: 'Gitee-SD-v1.5',
+          value: 'gitee-stable-diffusion-v1-5',
+        },
+        {
+          name: 'Gitee-HunyuanDiT',
+          value: 'gitee-HunyuanDiT-v1.2-Diffusers-Distilled',
+        },
+        {
+          name: 'Gitee-SD3.5-large-turbo',
+          value: 'gitee-stable-diffusion-3.5-large-turbo',
+        },
+        {
+          name: 'Gitee-SD-v1.4',
+          value: 'gitee-stable-diffusion-v1-4',
+        },
+        {
+          name: 'Gitee-flux-1-schnell',
+          value: 'gitee-flux-1-schnell',
+        },
+        {
+          name: 'Gitee-Kolors',
+          value: 'gitee-Kolors',
+        },
+        {
+          name: 'Gitee-SD3-medium',
+          value: 'gitee-stable-diffusion-3-medium',
+        },
+        {
+          name: 'Gitee-SDXL-base-1.0',
+          value: 'gitee-stable-diffusion-xl-base-1.0',
+        },
       ],
     },
     VideoModels: {
@@ -399,6 +490,22 @@ const ja: LocaleType = {
           name: 'カスタム',
           value: 0,
         },
+      ],
+    },
+    GiteeAIModels: {
+      Title: 'Gitee AI モデル',
+      Desc: 'Gitee AI モデルを選択',
+      List: [
+        { name: 'Kolors', value: 'Kolors' },
+        { name: 'FLUX.2-dev', value: 'FLUX.2-dev' },
+        { name: 'FLUX.2-klein-4B', value: 'FLUX.2-klein-4B' },
+        { name: 'FLUX.2-klein-9B', value: 'FLUX.2-klein-9B' },
+        { name: 'Z-Image', value: 'Z-Image' },
+        { name: 'GLM-Image', value: 'GLM-Image' },
+        { name: 'Qwen-Image', value: 'Qwen-Image' },
+        { name: 'Qwen-Image-Layered', value: 'Qwen-Image-Layered' },
+        { name: 'CogView4_6B', value: 'CogView4_6B' },
+        { name: 'stable-diffusion-3.5-large', value: 'stable-diffusion-3.5-large' },
       ],
     },
     LangSelecter: {

@@ -30,6 +30,7 @@ import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useStore } from "@/stores";
 import Locale from '@/locales'
 
@@ -46,18 +47,33 @@ type PageAuthProps = {
  * @param props.setOpen - 设置对话框打开状态的回调函数
  */
 const PageAuth = ({ open, setOpen }: PageAuthProps) => {
-  const { token, setToken } = useStore();
-  const apiKeyFromEnv = process.env.NEXT_PUBLIC_API_KEY || token;
+  const { token, setToken, giteeToken, setGiteeToken, provider, setProvider } = useStore();
+  const [selectedProvider, setSelectedProvider] = React.useState<'302ai' | 'giteeai'>(provider);
+  const [inputApiKey, setInputApiKey] = React.useState('');
+
+  // 当切换提供者时，更新输入框的值
+  React.useEffect(() => {
+    if (selectedProvider === '302ai') {
+      setInputApiKey(process.env.NEXT_PUBLIC_API_KEY || token);
+    } else {
+      setInputApiKey(process.env.NEXT_PUBLIC_GITEE_AI_API_KEY || giteeToken);
+    }
+  }, [selectedProvider, token, giteeToken]);
 
   React.useEffect(() => {
     if (window) {
-      if (apiKeyFromEnv) {
+      const apiKeyFromEnv = process.env.NEXT_PUBLIC_API_KEY;
+      const giteeApiKeyFromEnv = process.env.NEXT_PUBLIC_GITEE_AI_API_KEY;
+      
+      if (apiKeyFromEnv && !token) {
         setToken(apiKeyFromEnv);
-      } else if (!token) {
+      } else if (giteeApiKeyFromEnv && !giteeToken) {
+        setGiteeToken(giteeApiKeyFromEnv);
+      } else if (!token && !giteeToken) {
         setOpen(true);
       }
     }
-  }, [apiKeyFromEnv, setToken, setOpen, token]);
+  }, [token, giteeToken, setToken, setGiteeToken, setOpen]);
 
   /**
    * 处理 API 密钥表单提交
@@ -66,10 +82,13 @@ const PageAuth = ({ open, setOpen }: PageAuthProps) => {
    */
   const handleApiKeySubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const inputApiKey = formData.get('apiKey');
+    
     if (inputApiKey) {
-      setToken(inputApiKey as string);
+      if (selectedProvider === '302ai') {
+        setToken(inputApiKey);
+      } else {
+        setGiteeToken(inputApiKey);
+      }
       setOpen(false);
     }
   };
@@ -78,13 +97,41 @@ const PageAuth = ({ open, setOpen }: PageAuthProps) => {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogTitle className=''>{Locale.Auth.NeedCode}</DialogTitle>
-          <DialogDescription className="text-sm text-slate-500">{Locale.Auth.InputCode}</DialogDescription>
-          <form className="flex gap-2" onSubmit={handleApiKeySubmit}>
-            <div className="w-full ">
-              <label className='text-sm text-slate-500' htmlFor="apiKey"></label>
-              <Input id="apiKey" name="apiKey" placeholder={Locale.Auth.PlaceHolder} required />
+          <DialogTitle className=''>{Locale.Auth.Title}</DialogTitle>
+          <DialogDescription className="text-sm text-slate-500 mb-4">{Locale.Auth.NeedCode}</DialogDescription>
+          
+          <ToggleGroup 
+            type="single" 
+            value={selectedProvider} 
+            onValueChange={(value) => {
+              const newProvider = value as '302ai' | 'giteeai';
+              setSelectedProvider(newProvider);
+              setProvider(newProvider);
+            }}
+            className="w-full justify-start mb-4"
+          >
+            <ToggleGroupItem value="302ai" variant="outline">
+              302.AI
+            </ToggleGroupItem>
+            <ToggleGroupItem value="giteeai" variant="outline">
+              Gitee AI
+            </ToggleGroupItem>
+          </ToggleGroup>
+
+          <form className="space-y-4" onSubmit={handleApiKeySubmit}>
+            <div>
+              <label className='text-sm text-slate-500 block mb-2' htmlFor="apiKey">
+                {selectedProvider === '302ai' ? Locale.Auth.InputCode : Locale.Auth.GiteeInputCode}
+              </label>
+              <Input 
+                id="apiKey" 
+                name="apiKey" 
+                placeholder={Locale.Auth.PlaceHolder}
+                value={inputApiKey}
+                onChange={(e) => setInputApiKey(e.target.value)}
+              />
             </div>
+            
             <DialogFooter>
               <Button type="submit">{Locale.Auth.Submit}</Button>
             </DialogFooter>

@@ -1,33 +1,37 @@
 /**
- * @fileoverview API 模块入口文件
+ * @fileoverview API 模块统一导出
  * @author 祁筱欣
  * @date 2026-02-07
  * @since 2026-02-07
  * @contact qixiaoxin @stu.sqxy.edu.cn
  * @LICENSE AGPL-3.0 license
- * @remark 本模块导出所有 API 功能模块，包括认证、存储、文本处理、图片处理、视频生成等
+ * @remark 本文件为所有 API 模块的统一导出入口
  */
 
-// Token 模块
+// Token 管理
 export * from "./token";
 
-// Storage 模块
+// 存储管理
 export * from "./storage";
 
-// Text 模块
+// 文本处理
 export * from "./text";
 
-// Image 模块
+// 图片基础功能
 export * from "./image";
 
-// Text-to-Image 模块
+// 文本生成图片
 export * from "./text-to-image";
 
-// Image Processing 模块
+// 图片处理
 export * from "./image-processing";
 
-// Video 模块
+// 视频生成
 export * from "./video";
 
-// Task 模块
+// 任务轮询
 export * from "./task";
+
+// Gitee AI 模力方舟
+export * from "./gitee-ai";
+export * from "./gitee-ai-models";
