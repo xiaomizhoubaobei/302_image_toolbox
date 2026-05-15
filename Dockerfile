@@ -11,6 +11,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   python3 \
   && rm -rf /var/lib/apt/lists/*
 
+# 配置 npm 国内镜像源并设置超时/重试
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm config set fetch-retries 5 \
+    && npm config set fetch-retry-mintimeout 20000 \
+    && npm config set fetch-retry-maxtimeout 120000
+
 RUN npm install
 
 COPY . .
@@ -28,6 +34,12 @@ COPY --from=build /app/package.json /app/package-lock.json ./
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/static ./.next/static
+
+# 配置 npm 国内镜像源并设置超时/重试
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm config set fetch-retries 5 \
+    && npm config set fetch-retry-mintimeout 20000 \
+    && npm config set fetch-retry-maxtimeout 120000
 
 RUN npm install --only=production
 
