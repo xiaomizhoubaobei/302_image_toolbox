@@ -1,4 +1,4 @@
-FROM node:20.14-alpine AS build
+FROM node:26.1-alpine AS build
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # -------- Production Image Setup --------
-FROM node:20.14-alpine AS production
+FROM node:26.1-alpine AS production
 
 ENV NODE_ENV=production
 
