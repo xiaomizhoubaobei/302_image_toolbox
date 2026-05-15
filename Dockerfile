@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends
   python3 
   && rm -rf /var/lib/apt/lists/*
 
-# 配置 yarn 国内镜像源
-RUN yarn config set registry https://registry.npmmirror.com
+# 配置 yarn 华为云镜像源
+RUN yarn config set registry https://repo.huaweicloud.com/repository/npm/
 
 RUN yarn install --frozen-lockfile
 
@@ -32,8 +32,8 @@ COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/static ./.next/static
 
-# 配置 yarn 国内镜像源
-RUN yarn config set registry https://registry.npmmirror.com
+# 配置 yarn 华为云镜像源
+RUN yarn config set registry https://repo.huaweicloud.com/repository/npm/
 
 RUN yarn install --production
 
