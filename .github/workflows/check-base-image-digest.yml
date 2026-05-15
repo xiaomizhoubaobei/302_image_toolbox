@@ -1,0 +1,107 @@
+name: Check Base Image Digest
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 00:00 运行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  check-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Get current base image info from Dockerfile
+        id: current_info
+        run: |
+          # 从 Dockerfile 中提取基础镜像的完整引用
+          BASE_IMAGE_LINE=$(grep -E '^FROM\s+' Dockerfile | head -1)
+          BASE_IMAGE_FULL=$(echo "$BASE_IMAGE_LINE" | awk '{print $2}')
+
+          # 分离镜像名称和 digest
+          if echo "$BASE_IMAGE_FULL" | grep -q '@sha256:'; then
+            IMAGE_NAME=$(echo "$BASE_IMAGE_FULL" | cut -d'@' -f1)
+            CURRENT_DIGEST=$(echo "$BASE_IMAGE_FULL" | cut -d'@' -f2)
+          else
+            IMAGE_NAME="$BASE_IMAGE_FULL"
+            CURRENT_DIGEST="N/A"
+          fi
+
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+          echo "current_digest=$CURRENT_DIGEST" >> $GITHUB_OUTPUT
+          echo "base_image_full=$BASE_IMAGE_FULL" >> $GITHUB_OUTPUT
+          echo "Base image: $IMAGE_NAME"
+          echo "Current digest: $CURRENT_DIGEST"
+
+      - name: Get latest digest from registry
+        id: latest_digest
+        run: |
+          # 使用 skopeo 获取远程仓库中该镜像的最新 digest
+          IMAGE_NAME=${{ steps.current_info.outputs.image_name }}
+          IMAGE_URL="docker://$IMAGE_NAME"
+
+          # 安装 skopeo（通常已预装在 ubuntu-latest 上）
+          LATEST_DIGEST=$(skopeo inspect "$IMAGE_URL" | python3 -c "import sys,json; print(json.load(sys.stdin)['Digest'])")
+          echo "latest_digest=$LATEST_DIGEST" >> $GITHUB_OUTPUT
+          echo "Latest digest: $LATEST_DIGEST"
+
+      - name: Compare digests
+        id: compare
+        run: |
+          CURRENT=${{ steps.current_info.outputs.current_digest }}
+          LATEST=${{ steps.latest_digest.outputs.latest_digest }}
+
+          if [ "$CURRENT" = "$LATEST" ]; then
+            echo "digest_changed=false" >> $GITHUB_OUTPUT
+            echo "✅ Base image digest is up to date."
+          else
+            echo "digest_changed=true" >> $GITHUB_OUTPUT
+            echo "::warning::⚠️ Base image digest has changed!"
+            echo "Current (in Dockerfile): $CURRENT"
+            echo "Latest (from registry): $LATEST"
+          fi
+
+      - name: Create issue on digest change
+        if: steps.compare.outputs.digest_changed == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const imageName = '${{ steps.current_info.outputs.image_name }}';
+            const currentDigest = '${{ steps.current_info.outputs.current_digest }}';
+            const latestDigest = '${{ steps.latest_digest.outputs.latest_digest }}';
+
+            const title = `🔒 基础镜像 digest 已更新: ${imageName}`;
+            const body = [
+              `## 基础镜像更新提醒`,
+              '',
+              `基础镜像 \`${imageName}\` 的 digest 已发生变化，建议更新 Dockerfile。`,
+              '',
+              `| 项目 | 值 |`,
+              `|------|-----|`,
+              `| **镜像** | \`${imageName}\` |`,
+              `| **当前 digest** | \`${currentDigest}\` |`,
+              `| **最新 digest** | \`${latestDigest}\` |`,
+              '',
+              `### 建议操作`,
+              `将 Dockerfile 中的基础镜像更新为:`,
+              '```dockerfile',
+              `FROM ${imageName}@${latestDigest} AS base`,
+              '```',
+              '',
+              `> 此 Issue 由 GitHub Actions 自动创建`,
+            ].join('
+');
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['dependencies', 'security'],
+            });
