@@ -1,28 +1,5 @@
-/**
- * @fileoverview 图片传输组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了图片传输组件，用于处理图片的各种操作。
- *          该组件提供以下功能：
- *          - 支持多种图片处理工具
- *          - 支持图片生成、编辑、转换
- *          - 支持视频生成
- *          - 支持文字识别
- *          - 支持历史记录管理
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/* 模块获取 UI 组件
- *          - 依赖 @/components/* 模块获取业务组件
- *          - 依赖 @/lib/api 模块进行 API 调用
- *          - 依赖 @/types 获取类型定义
- *          - 依赖 @/constants 获取常量定义
- *          - 依赖 @/utils/Image 模块进行图片处理
- *          - 依赖 @/locales 获取国际化文本
- */
 import React from 'react'
+import NextImage from 'next/image'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '@/components/ui/button'
 import ImageCompare from './image-compare'
@@ -197,7 +174,7 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
       setResult('')
     } else {
       setResult('')
-      await handleStart()
+      handleStart()
     }
   }
 
@@ -224,7 +201,7 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
     // hook for payload
     if (tool.name === 'character') {
       setTimeout(() => {
-        setPayload((preData: any) => { return { ...preData, ratio: 1, label: '1:1' } });
+        setPayload((preData: any) => { return { ...preData, ratio: 1 / 1, label: '1:1' } });
       }, 20)
     }
     updTask({})
@@ -242,7 +219,7 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
     // hook
     if (tool.name === 'character') {
       setTimeout(() => {
-        setPayload((preData: any) => { return { ...preData, ratio: 1, label: '1:1' } });
+        setPayload((preData: any) => { return { ...preData, ratio: 1 / 1, label: '1:1' } });
       }, 30)
     }
     updTask({})
@@ -257,30 +234,55 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
   // 文件变化, 重置状态
   React.useEffect(() => {
     if (file) {
-      void handleReset()
+      handleReset()
     }
   }, [file])
 
   // 工具变化, 继续任务
   React.useEffect(() => {
-    void handleContinue()
+    handleContinue()
   }, [tool])
 
   // 原图变化，重设容器尺寸
   React.useEffect(() => {
-    void ImageManager.calculateContainerWidth(src, expand).then(setMaxWidth).catch(() => {
+    const offset = expand ? 480 : 560 // 上下留白的边距
+    const boxHeight = window.innerHeight - offset
+    const img = new Image()
+    img.src = src
+    img.onload = () => {
+      if (img.width && img.height) {
+        let boxWidth = Math.floor(img.width / img.height * boxHeight)
+        if (img.width < boxWidth) {
+          boxWidth = img.width
+        }
+        setMaxWidth(boxWidth + 'px')
+      }
+    }
+    img.onerror = () => {
       console.log('Load image error')
-      setMaxWidth('900px')
-    })
+    }
   }, [src, tool.name, media, expand])
 
   // 结果图变化，重设容器尺寸
   React.useEffect(() => {
     if (!result) return
-    void ImageManager.calculateContainerWidth(result, expand).then(setMaxWidth).catch(() => {
+    // setMaxWidth('10px')
+    const offset = expand ? 480 : 560 // 上下留白的边距
+    const boxHeight = window.innerHeight - offset
+    const img = new Image()
+    img.src = result
+    img.onload = () => {
+      if (img.width && img.height) {
+        let boxWidth = Math.floor(img.width / img.height * boxHeight)
+        if (img.width < boxWidth) {
+          boxWidth = img.width
+        }
+        setMaxWidth(boxWidth + 'px')
+      }
+    }
+    img.onerror = () => {
       console.log('Load image error')
-      setMaxWidth('900px')
-    })
+    }
   }, [result, expand])
 
   // 展示比例变化，重设容器尺寸
@@ -446,7 +448,7 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
               {['uncrop'].includes(tool.name) &&
                 <div className={twMerge("w-full h-full relative flex items-center justify-center",)}>
                   {!result &&
-                    < ImageUncropper src={src} setPayload={setPayload} />
+                    < ImageUncropper src={src} setSrc={setSrc} setPayload={setPayload} />
                   }
 
                   {result &&

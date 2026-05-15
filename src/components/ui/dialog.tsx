@@ -1,41 +1,3 @@
-/**
- * @fileoverview 对话框组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了对话框组件，用于显示模态内容。
- *          该组件提供以下功能：
- *          - 显示对话框覆盖层
- *          - 支持自定义标题、描述和内容
- *          - 提供关闭按钮
- *          - 支持动画过渡效果
- *
- *          组件特性：
- *          - 基于 Radix UI Dialog 构建
- *          - 使用 Tailwind CSS 进行样式定制
- *          - 支持响应式布局
- *          - 提供可访问性支持
- *          - 支持键盘关闭（ESC 键）
- *
- *          导出组件：
- *          - Dialog: 对话框根组件
- *          - DialogTrigger: 触发器组件
- *          - DialogPortal: 传送门组件
- *          - DialogOverlay: 覆盖层组件
- *          - DialogClose: 关闭按钮组件
- *          - DialogContent: 内容组件
- *          - DialogHeader: 头部组件
- *          - DialogFooter: 底部组件
- *          - DialogTitle: 标题组件
- *          - DialogDescription: 描述组件
- *
- *          依赖关系：
- *          - 依赖 @radix-ui/react-dialog
- *          - 依赖 @radix-ui/react-icons 的 Cross2Icon
- *          - 依赖 @/lib/utils 的 cn 工具函数
- */
 "use client"
 
 import * as React from "react"
@@ -53,7 +15,7 @@ const DialogPortal = DialogPrimitive.Portal
 const DialogClose = DialogPrimitive.Close
 
 const DialogOverlay = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Overlay>,
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
@@ -68,7 +30,7 @@ const DialogOverlay = React.forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const DialogContent = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Content>,
+  React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
@@ -120,7 +82,7 @@ const DialogFooter = ({
 DialogFooter.displayName = "DialogFooter"
 
 const DialogTitle = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Title>,
+  React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
@@ -135,7 +97,7 @@ const DialogTitle = React.forwardRef<
 DialogTitle.displayName = DialogPrimitive.Title.displayName
 
 const DialogDescription = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Description>,
+  React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description

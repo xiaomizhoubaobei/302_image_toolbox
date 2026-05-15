@@ -1,20 +1,3 @@
-/**
- * @fileoverview 页脚组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了页脚组件，用于显示页面底部信息。
- *          该组件提供以下功能：
- *          - 显示网站链接
- *          - 显示版权信息
- *          - 支持国际化
- *
- *          依赖关系：
- *          - 依赖 @/stores 获取全局状态
- *          - 依赖 @/locales 获取国际化文本
- */
 "use client";
 
 import React from "react";
@@ -41,7 +24,7 @@ export function Footer() {
               Powered By
             </div>
             <div className="banner flex items-center">
-              <Image width={50} height={14} src="/favicon.webp" alt="302.AI" />
+              <Image width={50} height={14} src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/banner.png" alt="" />
             </div>
           </a>
         </div>

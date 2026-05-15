@@ -1,14 +1,3 @@
-/**
- * @fileoverview 国际化配置入口文件
- * @author 祁筱欣
- * @date 2026-02-07
- * @since 2026-02-07
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块提供多语言支持，包含语言包加载、语言切换和本地化存储功能
- *          支持的语言：中文、英文、日文
- */
-
 // 'use client'
 
 import zh from "./zh";
@@ -111,4 +100,18 @@ export function getLang(): Lang {
 export function changeLang(lang: Lang | string) {
   setItem(LANG_KEY, lang);
   location.reload();
+}
+
+export function setLang(lang: Lang) {
+  setItem(LANG_KEY, lang);
+  // location.reload();
+}
+export function getISOLang() {
+  const isoLangString: Record<string, string> = {
+    cn: "zh-Hans",
+    tw: "zh-Hant",
+  };
+
+  const lang = getLang();
+  return isoLangString[lang] ?? lang;
 }

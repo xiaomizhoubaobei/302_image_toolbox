@@ -1,21 +1,3 @@
-/**
- * @fileoverview 警告栏组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了警告栏组件，用于显示错误信息。
- *          该组件提供以下功能：
- *          - 显示错误类型和内容
- *          - 支持错误链接识别
- *          - 根据错误代码提供本地化错误信息
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/alert 模块获取警告组件
- *          - 依赖 @/stores 获取全局状态
- *          - 依赖 @/locales 获取国际化文本
- */
 import React, { useState } from 'react'
 import { MdErrorOutline } from "react-icons/md";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"

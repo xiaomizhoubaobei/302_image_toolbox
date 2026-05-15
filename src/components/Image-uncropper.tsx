@@ -1,21 +1,3 @@
-/**
- * @fileoverview 图片外扩组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了图片外扩组件，用于扩展图片边界。
- *          该组件提供以下功能：
- *          - 支持图片外扩
- *          - 支持尺寸调整
- *          - 支持缩放操作
- *          - 生成遮罩文件
- *
- *          依赖关系：
- *          - 依赖 react-advanced-cropper 模块进行图片裁剪
- *          - 依赖 @/components/ui/input 模块获取输入框组件
- */
 import React, { useState, useEffect, useRef } from 'react'
 import { CropperRef, Cropper, ImageRestriction } from 'react-advanced-cropper'
 import { twMerge } from 'tailwind-merge'
@@ -25,7 +7,34 @@ import { Input } from "@/components/ui/input"
 import { GoZoomIn } from "react-icons/go";
 import { GoZoomOut } from "react-icons/go";
 import { GrPowerReset } from "react-icons/gr";
-import ImageManager from "@/utils/Image"
+
+export function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  type = 'image/png' as 'image/jpeg' | 'image/png',
+  quality?: number
+): Promise<Blob | null> {
+  return new Promise((res) => {
+    canvas.toBlob((blob) => res(blob), type, quality)
+  })
+}
+
+export function downloadImage(uri: string, name: string) {
+  const link = document.createElement('a')
+  link.href = uri
+  link.download = name
+
+  link.dispatchEvent(
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    })
+  )
+
+  setTimeout(() => {
+    link.remove()
+  }, 100)
+}
 
 type BoundingBox = {
   top: number
@@ -34,16 +43,30 @@ type BoundingBox = {
   height: number
 }
 
+type Params = {
+  file: File
+  left: string
+  right: string
+  up: string
+  down: string
+}
+
+type Result = {
+  base64: string
+}
+
 interface PropsData {
   src: string
+  setSrc: (src: string) => void
   setPayload: (data: any) => void
 }
 
-const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
+const ImageUncropper: React.FC<PropsData> = ({ src, setSrc, setPayload }) => {
   const boxRef = useRef<HTMLDivElement>(null)
   const cropperRef = useRef<CropperRef>(null)
   const [pixel, setPixel] = useState<BoundingBox | null>(null)
   const [image, setImage] = useState<HTMLImageElement | null>(null)
+  const [zoom, setZoom] = useState(0)
 
   // init
   useEffect(() => {
@@ -75,9 +98,9 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
     if (cropperRef.current) {
       cropperRef.current.setCoordinates(newPixel)
     }
-    const positionVal = getPosition(newPixel)
-    const maskVal = await getMaskFile()
-    setPayload((preData: any) => { return { ...preData, position: positionVal, mask: maskVal } });
+    const position = getPosition(newPixel)
+    const mask = await getMaskFile()
+    setPayload((preData: any) => { return { ...preData, position, mask } });
   }
 
   const onResetHeight = async (e: any) => {
@@ -93,9 +116,9 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
     if (cropperRef.current) {
       cropperRef.current.setCoordinates(newPixel)
     }
-    const positionVal = getPosition(newPixel)
-    const maskVal = await getMaskFile()
-    setPayload((preData: any) => { return { ...preData, position: positionVal, mask: maskVal } });
+    const position = getPosition(newPixel)
+    const mask = await getMaskFile()
+    setPayload((preData: any) => { return { ...preData, position, mask } });
   }
 
 
@@ -105,19 +128,21 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
     let up = pixel.top
     let down = image.height - pixel.height - up
 
-    return  {
+    const position = {
       left: left < 0 ? (left * -1) : 0,
       right: right < 0 ? (right * -1) : 0,
       up: up < 0 ? (up * -1) : 0,
       down: down < 0 ? (down * -1) : 0,
     }
+
+    return position
     // setProcessing(true)
   }
 
   const resetSize = async (pixel: any, originCanvas: any) => {
     return new Promise((resolve) => {
-      const positionVal = getPosition(pixel)
-      const { left, right, up, down } = positionVal;
+      const position = getPosition(pixel)
+      const { left, right, up, down } = position;
 
       const originUrl = originCanvas.toDataURL('image/png')
       const originImage = new Image()
@@ -154,11 +179,12 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
       const current = cropperRef.current as HTMLCanvasElement | null
       if (current) {
         const maskCanvas = (await resetSize(pixel, cropperRef.current?.getCanvas())) as HTMLCanvasElement
-        const maskBlob = await ImageManager.canvasToBlob(maskCanvas)
+        const maskBlob = await canvasToBlob(maskCanvas)
         if (!maskBlob) return null
-        return new File([maskBlob], 'mask.png', {
+        const maskFile = new File([maskBlob], 'mask.png', {
           type: 'image/png',
         })
+        return maskFile
       }
     } catch (error) {
       return null
@@ -170,9 +196,10 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
     event.stopPropagation()
     if (cropperRef.current) {
       cropperRef.current.zoomImage(1.2); // 放大
+      setZoom(1.2)
       const data = cropperRef.current.getCoordinates()
       setPixel(data)
-      void handleActionDone(data)
+      handleActionDone(data)
     }
   };
 
@@ -180,9 +207,10 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
     event.stopPropagation()
     if (cropperRef.current) {
       cropperRef.current.zoomImage(0.8); // 缩小
+      setZoom(0.8)
       const data = cropperRef.current.getCoordinates()
       setPixel(data)
-      void handleActionDone(data)
+      handleActionDone(data)
     }
   };
 
@@ -190,18 +218,19 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
     event.stopPropagation()
     if (cropperRef.current) {
       cropperRef.current.reset(); // 重置
+      setZoom(1)
       const data = cropperRef.current.getCoordinates()
       setPixel(data)
-      void handleActionDone(data)
+      handleActionDone(data)
     }
   };
 
   const handleActionDone = async (data?: any) => {
     const newPixel = data || pixel
     if (cropperRef.current) {
-      const positionVal = getPosition(newPixel)
-      const maskVal = await getMaskFile()
-      setPayload((preData: any) => { return { ...preData, position: positionVal, mask: maskVal } });
+      const position = getPosition(newPixel)
+      const mask = await getMaskFile()
+      setPayload((preData: any) => { return { ...preData, position, mask } });
     }
   }
 
@@ -258,8 +287,8 @@ const ImageUncropper: React.FC<PropsData> = ({ src, setPayload }) => {
       </div>
 
       <div
-        onMouseUp={() => void handleActionDone()}
-        onTouchEnd={() => void handleActionDone()}
+        onMouseUp={() => handleActionDone()}
+        onTouchEnd={() => handleActionDone()}
         className="show w-full h-full relative"
       >
         <div className='absolute top-0 left-0 w-full h-full flex justify-center items-center'>

@@ -1,76 +1,35 @@
-# 基础镜像
-FROM --platform=$BUILDPLATFORM node:lts AS base
+FROM node:20.14-alpine AS build
 
-LABEL org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/image_toolbox
-LABEL org.opencontainers.image.description="AI 图片工具箱 - 提供丰富的 AI 图片处理功能，支持链式操作"
-LABEL org.opencontainers.image.licenses=MIT
-LABEL org.opencontainers.image.title="AI 图片工具箱"
-LABEL org.opencontainers.image.maintainer="祁筱欣"
-LABEL org.opencontainers.image.version="0.0.1"
-LABEL org.opencontainers.image.created=${BUILD_DATE:-2025-12-30}
-LABEL org.opencontainers.image.revision=${VCS_REF:-latest}
-LABEL org.opencontainers.image.vendor=xiaomizhoubaobei
-LABEL org.opencontainers.image.authors=xiaomizhoubaobei
-LABEL build.url=https://github.com/xiaomizhoubaobei/image_toolbox/actions/runs/${RUN_ID}
-LABEL dependencies.node=${NODE_VERSION:-lts}
-LABEL org.opencontainers.image.nextjs=${NEXTJS_VERSION:-latest}
-LABEL org.opencontainers.image.yarn=${YARN_VERSION:-stable}
-LABEL org.opencontainers.image.typescript=${TYPESCRIPT_VERSION:-latest}
-LABEL org.opencontainers.image.provenance=enabled
-
-# 使用官方脚本安装yarn
-RUN corepack enable && corepack prepare yarn@stable --activate
-
-# 安装依赖
-FROM base AS deps
 WORKDIR /app
 
-# 复制依赖文件
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-# 使用 yarn 安装依赖
-RUN yarn install --frozen-lockfile
+# Install necessary packages for build
+RUN apk add --no-cache \
+  g++ \
+  make \
+  python3
 
-# 构建阶段
-FROM base AS builder
-WORKDIR /app
+RUN npm install
 
-# 复制依赖和源代码
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# 使用 yarn 构建应用程序
-RUN yarn build
+RUN npm run build
 
-# 生产环境镜像
-FROM base AS runner
+# -------- Production Image Setup --------
+FROM node:20.14-alpine AS production
+
+ENV NODE_ENV=production
+
 WORKDIR /app
 
-# 创建非root用户
-RUN groupadd --system --gid 1001 nodejs
-RUN useradd --system --uid 1001 --gid nodejs --home-dir /home/nextjs nextjs
-RUN mkdir -p /home/nextjs && chown nextjs:nodejs /home/nextjs
+COPY --from=build /app/package.json /app/package-lock.json ./
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/public ./public
+COPY --from=build /app/.next/static ./.next/static
 
-# 复制公共资源（如果存在）
-COPY --from=builder --chown=nextjs:nodejs /app/public ./
+RUN npm install --only=production
 
-# 设置预渲染缓存权限
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# 复制构建产物
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# 切换到非root用户
-USER nextjs
-
-# 暴露端口
 EXPOSE 3000
 
-# 设置环境变量
-ENV PORT=3000
-
-
-# 启动命令（standalone模式）
 CMD ["node", "server.js"]

@@ -1,27 +1,3 @@
-/**
- * @fileoverview 历史记录内容组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了历史记录内容组件，用于显示和管理历史操作记录。
- *          该组件提供以下功能：
- *          - 显示历史记录列表
- *          - 支持继续编辑
- *          - 支持下载图片/视频
- *          - 支持复制文本
- *          - 支持清空历史记录
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/scroll-area 模块获取滚动区域组件
- *          - 依赖 @/components/ui/button 模块获取按钮组件
- *          - 依赖 @/lib/api 模块获取历史记录数据
- *          - 依赖 @/utils/Image 模块进行图片处理
- *          - 依赖 @/utils/System 模块进行系统操作
- *          - 依赖 @/types 获取类型定义
- *          - 依赖 @/locales 获取国际化文本
- */
 "use client";
 
 import * as React from "react";

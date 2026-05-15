@@ -1,13 +1,3 @@
-/**
- * @fileoverview 图片处理工具类
- * @author 祁筱欣
- * @date 2026-02-07
- * @since 2026-02-07
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块提供图片处理相关工具方法，包括图片压缩、格式转换、尺寸读取、下载等功能
- */
-
 // import { saveAs } from 'file-saver';
 interface CompressOptions {
   maxSizeMB: number; // 最大图片大小，单位为MB
@@ -33,13 +23,19 @@ export default class ImageManager {
           let width = img.width;
           let height = img.height;
 
-          while ((width * height * 4) / (1024 * 1024) > maxSizeMB) {
-            width /= 1.1;
-            height /= 1.1;
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
+          // 更高效的尺寸调整算法
+          const targetSize = maxSizeMB * 1024 * 1024;
+          let currentSize = (width * height * 4) / (1024 * 1024);
+          
+          while (currentSize > maxSizeMB) {
+            width = Math.floor(width * 0.9);
+            height = Math.floor(height * 0.9);
+            currentSize = (width * height * 4) / (1024 * 1024);
           }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
 
           canvas.toBlob((compressedBlob) => {
             if (compressedBlob) {
@@ -51,6 +47,7 @@ export default class ImageManager {
         };
 
         img.onerror = reject;
+        // 添加错误处理
         img.src = String(reader.result);
       };
 
@@ -82,10 +79,14 @@ export default class ImageManager {
         let width = img.width;
         let height = img.height;
 
-        // 调整图片尺寸，以确保符合最大大小
-        while ((width * height * 4) / (1024 * 1024) > maxSizeMB) {
-          width /= 1.1;
-          height /= 1.1;
+        // 更高效的尺寸调整算法
+        const targetSize = maxSizeMB * 1024 * 1024;
+        let currentSize = (width * height * 4) / (1024 * 1024);
+        
+        while (currentSize > maxSizeMB) {
+          width = Math.floor(width * 0.9);
+          height = Math.floor(height * 0.9);
+          currentSize = (width * height * 4) / (1024 * 1024);
         }
 
         canvas.width = width;
@@ -95,7 +96,7 @@ export default class ImageManager {
         canvas.toBlob((blob) => {
           if (blob) {
             // 再次调整质量，确保符合最大大小
-            if (blob.size > maxSizeMB * 1024 * 1024) {
+            if (blob.size > targetSize) {
               return this.compressImageBlob(blob, maxSizeMB, mimeType, quality).then(resolve, reject);
             }
             resolve(blob);
@@ -105,6 +106,7 @@ export default class ImageManager {
         }, mimeType, quality);
       };
 
+      img.onerror = reject;
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -114,9 +116,14 @@ export default class ImageManager {
   // 下载图片为文件
   static imageToFile = async (url: string) => {
     try {
+      // 添加缓存检查
+      if (!url || url === '') {
+        throw new Error('Invalid URL');
+      }
+      
       const res = await fetch(url);
       if (!res.ok) {
-        return null
+        throw new Error(`Get origin image error: ${res.statusText}`);
       }
       const blob = await res.blob();
       // 创建一个File对象
@@ -124,9 +131,10 @@ export default class ImageManager {
       if (url.includes('.svg')) {
         fileName = 'file.svg'
       }
-       return  new File([blob], fileName, { type: blob.type });
+      const file = new File([blob], fileName, { type: blob.type });
+      return file;
     } catch (error) {
-      console.error('Error transferring image:', error);
+      // console.error('Error transferring image:', error);
       return null
     }
   }
@@ -167,9 +175,10 @@ export default class ImageManager {
         return url
       }
       const file = await this.imageToFile(url)
-      return  await this.fileToBase64(file)
+      const base64 = await this.fileToBase64(file)
+      return base64
     } catch (error) {
-      console.error('Error transferring image:', error);
+      // console.error('Error transferring image:', error);
       return null
     }
   }
@@ -178,17 +187,22 @@ export default class ImageManager {
   static pngToJpg = async (url: string) => {
     return new Promise((resolve, reject) => {
       const image = new Image();
-      image.src = url;
+      image.crossOrigin = 'anonymous'; // 添加跨域支持
       image.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = image.width;
         canvas.height = image.height;
         const ctx = canvas.getContext('2d');
-        ctx?.drawImage(image, 0, 0);
-        const jpegData = canvas.toDataURL('image/jpeg');
-        resolve(jpegData);
+        if (ctx) {
+          ctx.drawImage(image, 0, 0);
+          const jpegData = canvas.toDataURL('image/jpeg', 0.9); // 设置质量为0.9
+          resolve(jpegData);
+        } else {
+          reject(new Error('Failed to get canvas context'));
+        }
       };
       image.onerror = reject;
+      image.src = url;
     });
   }
 
@@ -231,7 +245,8 @@ export default class ImageManager {
   static localizeImage = async (url: string) => {
     try {
       const file = await ImageManager.imageToFile(url)
-      return  URL.createObjectURL(file as File);
+      const src = URL.createObjectURL(file as File);
+      return src
     } catch (error) {
       return null
     }
@@ -263,69 +278,13 @@ export default class ImageManager {
 
   // 加载图片
   static loadImage = async (src: string) => {
-    const img = new Image()
-    img.src = src
-  }
-
-  // Canvas 转 Blob
-  static canvasToBlob(
-    canvas: HTMLCanvasElement,
-    type: 'image/jpeg' | 'image/png' = 'image/png',
-    quality?: number
-  ): Promise<Blob | null> {
-    return new Promise((res) => {
-      canvas.toBlob((blob) => res(blob), type, quality)
-    })
-  }
-
-  // 下载图片
-  static downloadImage(uri: string, name: string) {
-    const link = document.createElement('a')
-    link.href = uri
-    link.download = name
-
-    link.dispatchEvent(
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      })
-    )
-
-    setTimeout(() => {
-      link.remove()
-    }, 100)
-  }
-
-  /**
-   * 计算图片容器的最大宽度
-   * @param src 图片地址
-   * @param expand 是否展开状态
-   * @param verticalOffset 垂直偏移量（上下留白的边距），默认展开时480，收起时560
-   * @returns Promise<string> 最大宽度的像素字符串（如 "900px"）
-   */
-  static calculateContainerWidth(src: string, expand: boolean, verticalOffset?: { expand: number, collapse: number }): Promise<string> {
-    return new Promise((resolve) => {
-      const offset = expand ? (verticalOffset?.expand ?? 480) : (verticalOffset?.collapse ?? 560)
-      const boxHeight = window.innerHeight - offset
+    return new Promise((resolve, reject) => {
       const img = new Image()
-      img.src = src
-      img.onload = () => {
-        if (img.width && img.height) {
-          let boxWidth = Math.floor(img.width / img.height * boxHeight)
-          if (img.width < boxWidth) {
-            boxWidth = img.width
-          }
-          resolve(boxWidth + 'px')
-        } else {
-          resolve('900px')
-        }
-      }
-      img.onerror = () => {
-        console.log('Load image error')
-        resolve('900px')
-      }
-    })
+      img.crossOrigin = 'anonymous'; // 添加跨域支持
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
   }
 
 }

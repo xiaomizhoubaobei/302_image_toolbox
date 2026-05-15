@@ -1,13 +1,3 @@
-/**
- * @fileoverview 系统工具类
- * @author 祁筱欣
- * @date 2026-02-07
- * @since 2026-02-07
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块提供系统级通用工具方法，包括数据合并、中文检测、时间格式化、复制到剪切板、下载图片和视频等功能
- */
-
 import ImageManager from "./Image";
 
 export default class SystemManager {
@@ -30,25 +20,26 @@ export default class SystemManager {
 
 	// 格式化当前时间
 	static getNowformatTime = () => {
-		const date = new Date();
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
-		const seconds = String(date.getSeconds()).padStart(2, '0');
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = String(date.getMonth() + 1).padStart(2, '0');
+		var day = String(date.getDate()).padStart(2, '0');
+		var hours = String(date.getHours()).padStart(2, '0');
+		var minutes = String(date.getMinutes()).padStart(2, '0');
+		var seconds = String(date.getSeconds()).padStart(2, '0');
 		return year + month + day + hours + minutes + seconds;
 	}
 
 	// 格式化时间戳
 	static formatTimestamp = (timestamp: number) => {
-		const date = new Date(timestamp);
-		const year = date.getFullYear();
-		const month = ("0" + (date.getMonth() + 1)).slice(-2);
-		const day = ("0" + date.getDate()).slice(-2);
-		const hours = ("0" + date.getHours()).slice(-2);
-		const minutes = ("0" + date.getMinutes()).slice(-2);
-		return  year + "/" + month + "/" + day + " " + hours + ":" + minutes;
+		var date = new Date(timestamp);
+		var year = date.getFullYear();
+		var month = ("0" + (date.getMonth() + 1)).slice(-2);
+		var day = ("0" + date.getDate()).slice(-2);
+		var hours = ("0" + date.getHours()).slice(-2);
+		var minutes = ("0" + date.getMinutes()).slice(-2);
+		var formattedDate = year + "/" + month + "/" + day + " " + hours + ":" + minutes;
+		return formattedDate;
 	}
 
 	// 复制数据到剪切板
@@ -63,7 +54,6 @@ export default class SystemManager {
 			textArea.focus();
 			textArea.select();
 			try {
-				// eslint-disable-next-line deprecation/deprecation
 				document.execCommand("copy");
 			} catch (error) {
 				console.log('copy text faild!')

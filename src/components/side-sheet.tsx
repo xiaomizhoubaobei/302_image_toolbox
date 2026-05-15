@@ -1,29 +1,10 @@
-/**
- * @fileoverview 侧边栏组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了侧边栏组件，用于显示工具菜单。
- *          该组件提供以下功能：
- *          - 显示工具列表
- *          - 支持工具选择
- *          - 支持文件上传
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/sheet 模块获取侧边栏组件
- *          - 依赖 @/components/ui/scroll-area 模块获取滚动区域组件
- *          - 依赖 @/components/tool-card 模块获取工具卡片组件
- *          - 依赖 @/components/upload-button 模块获取上传按钮组件
- *          - 依赖 @/types 获取类型定义
- *          - 依赖 @/locales 获取国际化文本
- */
 import React from "react"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -47,7 +28,7 @@ interface PropsData {
 }
 
 
-export function SideSheet({ status, tools, tool, setTool, setFile }: PropsData) {
+export function SideSheet({ status, tools, tool, setTool, file, setFile }: PropsData) {
   const triggerRef = React.useRef<any>(null)
 
   const handleSelectTool = async (it: Tool) => {
@@ -65,6 +46,7 @@ export function SideSheet({ status, tools, tool, setTool, setFile }: PropsData) 
     <Sheet>
       <SheetTrigger asChild ref={triggerRef}>
         <div className="flex py-1 items-center cursor-pointer rounded-md hover:scale-110">
+          {/* <Image width={32} height={32} alt="logo" src="/logo.png"></Image> */}
           <RiMenuUnfoldFill className="w-8 h-8 text-primary" />
         </div>
       </SheetTrigger>
@@ -72,7 +54,7 @@ export function SideSheet({ status, tools, tool, setTool, setFile }: PropsData) 
         <SheetHeader>
           <SheetTitle>
             <div className="w-full flex items-center justify-center space-x-2 py-2">
-              <Image width={32} height={32} alt="logo" src="/favicon.webp"></Image>
+              <Image width={32} height={32} alt="logo" src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/logo.png"></Image>
               <p className='font-medium text-xl md:text-2xl'>{Locale.Photo.Title}</p>
             </div>
           </SheetTitle>

@@ -1,21 +1,3 @@
-/**
- * @fileoverview 角色选择模态框组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了角色选择模态框组件，用于选择图片滤镜角色。
- *          该组件提供以下功能：
- *          - 显示可选角色列表
- *          - 支持角色选择
- *          - 显示角色预览
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/alert-dialog 模块获取对话框组件
- *          - 依赖 @/components/ui/button 模块获取按钮组件
- *          - 依赖 @/locales 获取国际化文本
- */
 import React from 'react'
 import Image from 'next/image'
 import {

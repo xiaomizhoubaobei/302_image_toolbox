@@ -1,26 +1,18 @@
-/**
- * @fileoverview 上传文件组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了上传文件组件，用于拖放或点击上传文件。
- *          该组件提供以下功能：
- *          - 支持文件拖放
- *          - 支持点击上传
- *          - 显示拖放状态
- *
- *          依赖关系：
- *          - 依赖 @/components/drop-zone 模块获取拖放区域组件
- */
 "use client"
 
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { twMerge } from 'tailwind-merge'
-import DropZone from './drop-zone'
+import dynamic from 'next/dynamic'
 import { RiUpload2Line } from "react-icons/ri";
 import Locale from "@/locales"
+
+// 动态导入 DropZone 组件
+const DropZone = dynamic(() => import('./drop-zone'), {
+  ssr: false,
+  loading: () => <div className="bg-primary opacity-60 rounded-2xl p-4 w-full h-48 flex items-center justify-center">
+    <div className="text-white">Loading drop zone...</div>
+  </div>
+})
 
 const ALLOWED_FILES = ['image/png', 'image/jpeg', 'image/webp'];
 
@@ -43,6 +35,12 @@ const UploadFile = forwardRef(({ file, setFile }: UplodFileProps, ref: any) => {
     )[0]
 
     if (file) {
+      // 检查文件大小，如果过大则压缩
+      if (file.size > 10 * 1024 * 1024) { // 10MB
+        // 显示提示信息
+        alert('File size exceeds 10MB. The file will be compressed automatically.')
+      }
+      
       if (setFile) {
         setFile(file)
       }

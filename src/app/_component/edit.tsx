@@ -1,32 +1,3 @@
-/**
- * @fileoverview 图片编辑页面组件
- * @author 祁筱欣
- * @date 2026-02-05
- * @since 2026-02-05
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了图片编辑功能的主界面，提供工具选择、图片上传、编辑操作和历史记录管理。
- *          该组件作为客户端组件运行，负责以下任务：
- *          - 提供工具栏界面，支持选择不同的图片处理工具
- *          - 管理图片上传和预览功能
- *          - 处理图片生成、视频生成和文字识别等操作
- *          - 管理操作历史记录，支持查看和恢复历史
- *          - 提供全屏/窗口模式切换功能
- *          - 支持下载生成的图片和视频
- *
- *          工作流程：
- *          1. 用户选择工具并上传图片
- *          2. 组件显示图片编辑界面
- *          3. 用户配置参数并执行编辑操作
- *          4. 组件显示处理结果并保存到历史记录
- *          5. 用户可以下载结果或继续编辑
- *
- *          依赖关系：
- *          - 依赖 @/components/* 模块获取 UI 组件
- *          - 依赖 @/lib/api 模块进行 API 调用
- *          - 依赖 @/utils/* 模块进行图片和系统操作
- *          - 依赖 @/locales 模块获取国际化文本
- */
 "use client"
 import React, { useState } from 'react'
 import Image from 'next/image'
@@ -59,15 +30,6 @@ interface PropsData {
   setFile: (file: File | null) => void
 }
 
-/**
- * 图片编辑页面主组件
- * 管理工具选择、图片上传、编辑操作和历史记录
- * @param props - 组件属性
- * @param props.tool - 当前选中的工具
- * @param props.setTool - 设置工具的回调函数
- * @param props.file - 当前上传的文件
- * @param props.setFile - 设置文件的回调函数
- */
 function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
   const [status, setStatus] = useState<Status>('Ready')
   const [src, setSrc] = useState('')
@@ -88,7 +50,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
         setSrc(url)
       }
     }
-    void setMinSrc()
+    setMinSrc()
   }, [file])
 
   React.useEffect(() => {
@@ -97,13 +59,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
     }
   }, [status, setFile])
 
-  /**
-   * 处理图片生成操作
-   * 调用 API 生成处理后的图片，并保存到历史记录
-   * @param src - 源图片 URL
-   * @param action - 操作参数，包含工具类型和负载
-   * @returns 返回生成结果的 Promise
-   */
+  // 创建图像
   const handleOngenerateImage = async (src: string, action: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -132,13 +88,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
     })
   }
 
-  /**
-   * 处理视频生成操作
-   * 调用 API 生成视频，并保存到历史记录
-   * @param src - 源图片 URL
-   * @param action - 操作参数，包含工具类型和负载
-   * @returns 返回生成结果的 Promise
-   */
+  // 创建视频
   const handleOngenerateVideo = async (src: string, action: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -165,13 +115,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
     })
   }
 
-  /**
-   * 处理文字识别操作
-   * 调用 API 识别图片中的文字，并保存到历史记录
-   * @param src - 源图片 URL
-   * @param action - 操作参数，包含工具类型和负载
-   * @returns 返回识别结果的 Promise
-   */
+  // 读取文本
   const handleOngenerateText = async (src: string, action: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -216,7 +160,7 @@ function PhotoshowEdit({ tool, setTool, file, setFile }: PropsData) {
       <div className="hidden md:block left w-[310px] h-full shadow-2xl">
         <div className="sider-bar w-[310px] h-full p-4 bg-white flex flex-col">
           <div className="w-full flex items-center justify-center space-x-2 py-2">
-            <Image width={32} height={32} alt="logo" src="/favicon.webp"></Image>
+            <Image width={32} height={32} alt="logo" src="https://img.mizhoubaobei.top/302AI/302_image_toolbox/logo.png"></Image>
             <p className='font-medium text-xl md:text-2xl'>{Locale.Photo.Title}</p>
           </div>
           <div className="grow relative mt-2">

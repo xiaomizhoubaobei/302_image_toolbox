@@ -1,20 +1,3 @@
-/**
- * @fileoverview 上传栏组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了上传栏组件，用于上传人脸图片。
- *          该组件提供以下功能：
- *          - 显示上传按钮
- *          - 显示已上传文件
- *          - 支持删除已上传文件
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/button 模块获取按钮组件
- *          - 依赖 @/locales 获取国际化文本
- */
 import React from 'react'
 import { Button } from './ui/button'
 import { RiUpload2Fill } from "react-icons/ri";

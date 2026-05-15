@@ -1,21 +1,5 @@
-/**
- * @fileoverview 缩放框组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了缩放框组件，用于缩放和平移内容。
- *          该组件提供以下功能：
- *          - 支持缩放操作
- *          - 支持平移操作
- *          - 支持重置操作
- *          - 支持鼠标滚轮缩放
- *
- *          依赖关系：
- *          - 依赖 react-zoom-pan-pinch 模块进行缩放和平移
- */
-import React from "react";
+import { Animation } from "konva/lib/Animation";
+import React, { Component, useEffect, useRef } from "react";
 import { GoZoomIn } from "react-icons/go";
 import { GoZoomOut } from "react-icons/go";
 import { GrPowerReset } from "react-icons/gr";

@@ -1,41 +1,3 @@
-/**
- * @fileoverview 警告对话框组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了警告对话框组件，用于显示需要用户确认的重要操作。
- *          该组件提供以下功能：
- *          - 显示警告对话框覆盖层
- *          - 支持自定义标题、描述和操作按钮
- *          - 提供确认和取消两种操作选项
- *          - 支持动画过渡效果
- *
- *          组件特性：
- *          - 基于 Radix UI AlertDialog 构建
- *          - 使用 Tailwind CSS 进行样式定制
- *          - 支持响应式布局
- *          - 提供可访问性支持
- *
- *          导出组件：
- *          - AlertDialog: 对话框根组件
- *          - AlertDialogTrigger: 触发器组件
- *          - AlertDialogPortal: 传送门组件
- *          - AlertDialogOverlay: 覆盖层组件
- *          - AlertDialogContent: 内容组件
- *          - AlertDialogHeader: 头部组件
- *          - AlertDialogFooter: 底部组件
- *          - AlertDialogTitle: 标题组件
- *          - AlertDialogDescription: 描述组件
- *          - AlertDialogAction: 确认按钮组件
- *          - AlertDialogCancel: 取消按钮组件
- *
- *          依赖关系：
- *          - 依赖 @radix-ui/react-alert-dialog
- *          - 依赖 @/lib/utils 的 cn 工具函数
- *          - 依赖 button 组件的 buttonVariants
- */
 "use client"
 
 import * as React from "react"
@@ -51,7 +13,7 @@ const AlertDialogTrigger = AlertDialogPrimitive.Trigger
 const AlertDialogPortal = AlertDialogPrimitive.Portal
 
 const AlertDialogOverlay = React.forwardRef<
-  React.ComponentRef<typeof AlertDialogPrimitive.Overlay>,
+  React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Overlay
@@ -66,7 +28,7 @@ const AlertDialogOverlay = React.forwardRef<
 AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 
 const AlertDialogContent = React.forwardRef<
-  React.ComponentRef<typeof AlertDialogPrimitive.Content>,
+  React.ElementRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
 >(({ className, ...props }, ref) => (
   <AlertDialogPortal>
@@ -112,7 +74,7 @@ const AlertDialogFooter = ({
 AlertDialogFooter.displayName = "AlertDialogFooter"
 
 const AlertDialogTitle = React.forwardRef<
-  React.ComponentRef<typeof AlertDialogPrimitive.Title>,
+  React.ElementRef<typeof AlertDialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Title
@@ -124,7 +86,7 @@ const AlertDialogTitle = React.forwardRef<
 AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName
 
 const AlertDialogDescription = React.forwardRef<
-  React.ComponentRef<typeof AlertDialogPrimitive.Description>,
+  React.ElementRef<typeof AlertDialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
@@ -137,7 +99,7 @@ AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName
 
 const AlertDialogAction = React.forwardRef<
-  React.ComponentRef<typeof AlertDialogPrimitive.Action>,
+  React.ElementRef<typeof AlertDialogPrimitive.Action>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Action
@@ -149,7 +111,7 @@ const AlertDialogAction = React.forwardRef<
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
 
 const AlertDialogCancel = React.forwardRef<
-  React.ComponentRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel

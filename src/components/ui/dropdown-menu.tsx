@@ -1,47 +1,3 @@
-/**
- * @fileoverview 下拉菜单组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了下拉菜单组件，用于显示操作菜单。
- *          该组件提供以下功能：
- *          - 显示下拉菜单列表
- *          - 支持菜单项、复选框、单选按钮
- *          - 支持子菜单
- *          - 支持分组和分隔符
- *          - 显示快捷键提示
- *
- *          组件特性：
- *          - 基于 Radix UI DropdownMenu 构建
- *          - 使用 Tailwind CSS 进行样式定制
- *          - 支持键盘导航
- *          - 提供可访问性支持
- *          - 支持动画过渡效果
- *
- *          导出组件：
- *          - DropdownMenu: 下拉菜单根组件
- *          - DropdownMenuTrigger: 触发器组件
- *          - DropdownMenuGroup: 菜单组组件
- *          - DropdownMenuPortal: 传送门组件
- *          - DropdownMenuSub: 子菜单组件
- *          - DropdownMenuRadioGroup: 单选组组件
- *          - DropdownMenuSubTrigger: 子菜单触发器
- *          - DropdownMenuSubContent: 子菜单内容
- *          - DropdownMenuContent: 内容组件
- *          - DropdownMenuItem: 菜单项组件
- *          - DropdownMenuCheckboxItem: 复选框菜单项
- *          - DropdownMenuRadioItem: 单选菜单项
- *          - DropdownMenuLabel: 标签组件
- *          - DropdownMenuSeparator: 分隔符组件
- *          - DropdownMenuShortcut: 快捷键组件
- *
- *          依赖关系：
- *          - 依赖 @radix-ui/react-dropdown-menu
- *          - 依赖 @radix-ui/react-icons 的 CheckIcon、ChevronRightIcon、DotFilledIcon
- *          - 依赖 @/lib/utils 的 cn 工具函数
- */
 "use client"
 
 import * as React from "react"
@@ -64,11 +20,10 @@ const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
 const DropdownMenuSubTrigger = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.SubTrigger>,
+  React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
     inset?: boolean
   }
@@ -90,7 +45,7 @@ DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName
 
 const DropdownMenuSubContent = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.SubContent>,
+  React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.SubContent
@@ -106,7 +61,7 @@ DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName
 
 const DropdownMenuContent = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.Content>,
+  React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
 >(({ className, sideOffset = 4, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
@@ -125,7 +80,7 @@ const DropdownMenuContent = React.forwardRef<
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
 
 const DropdownMenuItem = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.Item>,
+  React.ElementRef<typeof DropdownMenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
     inset?: boolean
   }
@@ -143,7 +98,7 @@ const DropdownMenuItem = React.forwardRef<
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
 const DropdownMenuCheckboxItem = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.CheckboxItem>,
+  React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
 >(({ className, children, checked, ...props }, ref) => (
   <DropdownMenuPrimitive.CheckboxItem
@@ -167,7 +122,7 @@ DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName
 
 const DropdownMenuRadioItem = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.RadioItem>,
+  React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
 >(({ className, children, ...props }, ref) => (
   <DropdownMenuPrimitive.RadioItem
@@ -189,7 +144,7 @@ const DropdownMenuRadioItem = React.forwardRef<
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName
 
 const DropdownMenuLabel = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.Label>,
+  React.ElementRef<typeof DropdownMenuPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
     inset?: boolean
   }
@@ -207,7 +162,7 @@ const DropdownMenuLabel = React.forwardRef<
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
 
 const DropdownMenuSeparator = React.forwardRef<
-  React.ComponentRef<typeof DropdownMenuPrimitive.Separator>,
+  React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator

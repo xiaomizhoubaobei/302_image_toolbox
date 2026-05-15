@@ -1,19 +1,3 @@
-/**
- * @fileoverview 图片对比组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了图片对比组件，用于并排对比两张图片。
- *          该组件提供以下功能：
- *          - 显示两张图片的对比
- *          - 支持滑动对比
- *          - 支持动画过渡效果
- *
- *          依赖关系：
- *          - 依赖 react-compare-slider 模块进行图片对比
- */
 import React, { useState, useEffect } from 'react'
 import {
   ReactCompareSlider,

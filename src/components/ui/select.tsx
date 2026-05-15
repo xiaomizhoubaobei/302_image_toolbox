@@ -1,42 +1,3 @@
-/**
- * @fileoverview 下拉选择组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了下拉选择组件，用于从预定义选项中选择一个值。
- *          该组件提供以下功能：
- *          - 显示下拉选择列表
- *          - 支持单选操作
- *          - 显示选中状态指示器
- *          - 支持分组和分隔符
- *          - 支持滚动和搜索
- *
- *          组件特性：
- *          - 基于 Radix UI Select 构建
- *          - 使用 Tailwind CSS 进行样式定制
- *          - 支持键盘导航
- *          - 提供可访问性支持
- *          - 支持动画过渡效果
- *
- *          导出组件：
- *          - Select: 下拉选择根组件
- *          - SelectGroup: 选项组组件
- *          - SelectValue: 选中值显示组件
- *          - SelectTrigger: 触发器组件
- *          - SelectContent: 内容组件
- *          - SelectLabel: 标签组件
- *          - SelectItem: 选项组件
- *          - SelectSeparator: 分隔符组件
- *          - SelectScrollUpButton: 向上滚动按钮
- *          - SelectScrollDownButton: 向下滚动按钮
- *
- *          依赖关系：
- *          - 依赖 @radix-ui/react-select
- *          - 依赖 @radix-ui/react-icons 的 CaretSortIcon、CheckIcon、ChevronDownIcon、ChevronUpIcon
- *          - 依赖 @/lib/utils 的 cn 工具函数
- */
 "use client"
 
 import * as React from "react"
@@ -57,7 +18,7 @@ const SelectGroup = SelectPrimitive.Group
 const SelectValue = SelectPrimitive.Value
 
 const SelectTrigger = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Trigger>,
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
@@ -77,7 +38,7 @@ const SelectTrigger = React.forwardRef<
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectScrollUpButton = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.ScrollUpButton>,
+  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.ScrollUpButton
@@ -94,7 +55,7 @@ const SelectScrollUpButton = React.forwardRef<
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
 
 const SelectScrollDownButton = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.ScrollDownButton>,
+  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.ScrollDownButton
@@ -112,7 +73,7 @@ SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName
 
 const SelectContent = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Content>,
+  React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = "popper", ...props }, ref) => (
   <SelectPrimitive.Portal>
@@ -144,7 +105,7 @@ const SelectContent = React.forwardRef<
 SelectContent.displayName = SelectPrimitive.Content.displayName
 
 const SelectLabel = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Label>,
+  React.ElementRef<typeof SelectPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
@@ -156,7 +117,7 @@ const SelectLabel = React.forwardRef<
 SelectLabel.displayName = SelectPrimitive.Label.displayName
 
 const SelectItem = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Item>,
+  React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Item
@@ -178,7 +139,7 @@ const SelectItem = React.forwardRef<
 SelectItem.displayName = SelectPrimitive.Item.displayName
 
 const SelectSeparator = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Separator>,
+  React.ElementRef<typeof SelectPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator

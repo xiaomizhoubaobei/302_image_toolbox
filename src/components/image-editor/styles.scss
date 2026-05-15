@@ -1,59 +1,13 @@
-/**
- * @fileoverview 图像编辑器全局样式
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本样式文件定义了图像编辑器的全局样式规则。
- *          该文件提供以下样式功能：
- *          - 主题色变量定义
- *          - 图像编辑器容器样式
- *          - 预览区域样式
- *          - 裁剪器区域样式
- *          - 滑块区域样式
- *          - 裁剪器遮罩样式
- *          - 重置按钮样式
- *
- *          样式变量：
- *          - $theme-color: 主题色 #61DAFB（React 蓝色）
- *
- *          样式说明：
- *          - image-editor: 图像编辑器主容器
- *          - image-editor__preview: 预览区域
- *          - image-editor__cropper: 裁剪器区域
- *          - image-editor__slider: 滑块区域
- *          - image-editor__cropper-overlay: 裁剪器遮罩
- *          - image-editor__service: 服务区域（隐藏）
- *          - image-editor__reset-button: 重置按钮
- *
- *          设计特性：
- *          - 深色主题配色
- *          - 圆形预览区域（45px x 45px）
- *          - 裁剪器高度 400px
- *          - 平滑过渡动画
- *          - 悬停交互效果
- *
- *          依赖关系：
- *          - 被 index.tsx 主组件引用
- *          - 需要与 Tailwind CSS 配合使用
- */
-
-/** 主题色变量 */
 $theme-color: #61DAFB;
 
-/** body 基础样式重置 */
 body {
 	margin: 0;
 }
 
-/** 图像编辑器主容器 */
 .image-editor {
 	color: $theme-color;
 	border: solid 1px #2b2a30;
 	max-height: 100%;
-
-	/** 预览区域 */
 	&__preview {
 		height: 45px;
 		width: 45px;
@@ -64,16 +18,12 @@ body {
 		top: 20px;
 		border-radius: 50%;
 	}
-
-	/** 裁剪器区域 */
 	&__cropper {
 		background: #0f0e13;
 		height: 400px;
 		max-height: 100%;
 		position: relative;
 	}
-
-	/** 滑块区域 */
 	&__slider {
 		width: 100%;
 		left: 50%;
@@ -81,35 +31,26 @@ body {
 		bottom: 20px;
 		position: absolute;
 	}
-
-	/** 裁剪器遮罩 */
 	&__cropper-overlay {
 		transition: 0.5s;
-		/** 遮罩淡化状态 */
 		&--faded {
 			color: rgba(black, 0.9);
 		}
 	}
-
-	/** 服务区域（隐藏） */
 	&__service {
 		pointer-events: none;
 		left: -100%;
 		position: absolute;
 	}
-
-	/** 重置按钮 */
 	&__reset-button {
 		position: absolute;
 		right: 20px;
 		top: 20px;
 		background: rgba(white, 0.1);
-		/** 悬停状态 */
 		&:hover {
 			fill: $theme-color;
 			background: rgba(white, 0.2);
 		}
-		/** 隐藏状态 */
 		&--hidden {
 			opacity: 0;
 			visibility: hidden;

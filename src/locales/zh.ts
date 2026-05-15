@@ -1,13 +1,3 @@
-/**
- * @fileoverview 中文国际化配置文件
- * @author 祁筱欣
- * @date 2026-02-07
- * @since 2026-02-07
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块提供中文语言包，包含所有界面文本的中文翻译
- */
-
 const zh = {
   Symbol: "zh",
   Title: 'AI图片工具箱 - 302.AI',
@@ -61,9 +51,6 @@ const zh = {
     InputCode: '请在下方输入302.AI的官方API-KEY',
     PlaceHolder: 'sk-xxxxxxxxxxxxxxxxx',
     Submit: '保存',
-    GiteeTitle: 'Gitee AI',
-    GiteeInputCode: '请在下方输入Gitee AI的官方API-KEY',
-    GiteePlaceHolder: 'sk-xxxxxxxxxxxxxxxxx',
   },
   Footer: {
     Title: '内容由AI生成，仅供参考',
@@ -253,62 +240,62 @@ const zh = {
         {
           label: '高级定制插图',
           value: 'Haute Couture Illustration',
-          icon: '/images/c01.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c01.png'
         },
         {
           label: '超现实科幻插图',
           value: 'Surreal Sci-Fi Realism Illustration',
-          icon: '/images/c02.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c02.png'
         },
         {
           label: '黑白木刻版画',
           value: 'Black and White Blockprint',
-          icon: '/images/c03.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c03.png'
         },
         {
           label: '双子座漫画',
           value: 'Gemini Manga',
-          icon: '/images/c04.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c04.png'
         },
         {
           label: '小微木刻版画',
           value: 'Little Tinies Blockprint',
-          icon: '/images/c05.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c05.png'
         },
         {
           label: '波普艺术插图',
           value: 'Pop Art Illustration',
-          icon: '/images/c06.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c06.png'
         },
         {
           label: '点插图',
           value: 'The Point Illustration',
-          icon: '/images/c07.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c07.png'
         },
         {
           label: '柔焦3D',
           value: 'Soft Focus 3D',
-          icon: '/images/c08.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c08.png'
         },
         {
           label: '绘画插图',
           value: 'Painted Illustration',
-          icon: '/images/c09.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c09.png'
         },
         {
           label: '彩色漫画',
           value: 'Colorful Comicbook',
-          icon: '/images/c10.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c10.png'
         },
         {
           label: '粗线条',
           value: 'Bold Lineart',
-          icon: '/images/c11.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c11.png'
         },
         {
           label: '柔和动漫插图',
           value: 'Soft Anime Illustration',
-          icon: '/images/c12.png'
+          icon: 'https://img.mizhoubaobei.top/302AI/302_image_toolbox/images/c12.png'
         },
       ]
     },
@@ -351,94 +338,6 @@ const zh = {
         {
           name: '艺术二维码',
           value: 'qr-code',
-        },
-        {
-          name: 'Gitee-Z-Image',
-          value: 'gitee-Z-Image',
-        },
-        {
-          name: 'Gitee-FLUX.2-klein-4B',
-          value: 'gitee-FLUX.2-klein-4B',
-        },
-        {
-          name: 'Gitee-FLUX.2-klein-9B',
-          value: 'gitee-FLUX.2-klein-9B',
-        },
-        {
-          name: 'Gitee-GLM-Image',
-          value: 'gitee-GLM-Image',
-        },
-        {
-          name: 'Gitee-Qwen-Image-2512',
-          value: 'gitee-Qwen-Image-2512',
-        },
-        {
-          name: 'Gitee-FLUX.2-dev',
-          value: 'gitee-FLUX.2-dev',
-        },
-        {
-          name: 'Gitee-LongCat-Image',
-          value: 'gitee-LongCat-Image',
-        },
-        {
-          name: 'Gitee-z-image-turbo',
-          value: 'gitee-z-image-turbo',
-        },
-        {
-          name: 'Gitee-Qwen-Image',
-          value: 'gitee-Qwen-Image',
-        },
-        {
-          name: 'Gitee-FLUX_1-Krea-dev',
-          value: 'gitee-FLUX_1-Krea-dev',
-        },
-        {
-          name: 'Gitee-CogView4_6B',
-          value: 'gitee-CogView4_6B',
-        },
-        {
-          name: 'Gitee-SD3.5-large',
-          value: 'gitee-stable-diffusion-3.5-large',
-        },
-        {
-          name: 'Gitee-FLUX.1-dev',
-          value: 'gitee-FLUX.1-dev',
-        },
-        {
-          name: 'Gitee-HiDream-I1-Full',
-          value: 'gitee-HiDream-I1-Full',
-        },
-        {
-          name: 'Gitee-SD-v1.5',
-          value: 'gitee-stable-diffusion-v1-5',
-        },
-        {
-          name: 'Gitee-HunyuanDiT',
-          value: 'gitee-HunyuanDiT-v1.2-Diffusers-Distilled',
-        },
-        {
-          name: 'Gitee-SD3.5-large-turbo',
-          value: 'gitee-stable-diffusion-3.5-large-turbo',
-        },
-        {
-          name: 'Gitee-SD-v1.4',
-          value: 'gitee-stable-diffusion-v1-4',
-        },
-        {
-          name: 'Gitee-flux-1-schnell',
-          value: 'gitee-flux-1-schnell',
-        },
-        {
-          name: 'Gitee-Kolors',
-          value: 'gitee-Kolors',
-        },
-        {
-          name: 'Gitee-SD3-medium',
-          value: 'gitee-stable-diffusion-3-medium',
-        },
-        {
-          name: 'Gitee-SDXL-base-1.0',
-          value: 'gitee-stable-diffusion-xl-base-1.0',
         },
       ],
     },
@@ -488,22 +387,6 @@ const zh = {
           name: '自定义',
           value: 0,
         },
-      ],
-    },
-    GiteeAIModels: {
-      Title: 'Gitee AI 模型',
-      Desc: '选择 Gitee AI 模型',
-      List: [
-        { name: 'Kolors', value: 'Kolors' },
-        { name: 'FLUX.2-dev', value: 'FLUX.2-dev' },
-        { name: 'FLUX.2-klein-4B', value: 'FLUX.2-klein-4B' },
-        { name: 'FLUX.2-klein-9B', value: 'FLUX.2-klein-9B' },
-        { name: 'Z-Image', value: 'Z-Image' },
-        { name: 'GLM-Image', value: 'GLM-Image' },
-        { name: 'Qwen-Image', value: 'Qwen-Image' },
-        { name: 'Qwen-Image-Layered', value: 'Qwen-Image-Layered' },
-        { name: 'CogView4_6B', value: 'CogView4_6B' },
-        { name: 'stable-diffusion-3.5-large', value: 'stable-diffusion-3.5-large' },
       ],
     },
     LangSelecter: {

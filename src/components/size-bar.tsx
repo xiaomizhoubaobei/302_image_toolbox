@@ -1,19 +1,3 @@
-/**
- * @fileoverview 尺寸栏组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了尺寸栏组件，用于选择图片尺寸比例。
- *          该组件提供以下功能：
- *          - 显示尺寸比例选择按钮
- *          - 支持自定义尺寸
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/button 模块获取按钮组件
- *          - 依赖 @/components/size-modal 模块获取尺寸模态框组件
- */
 import React from 'react'
 import { Button } from './ui/button'
 import { twMerge } from 'tailwind-merge'
@@ -27,7 +11,7 @@ interface PropsData {
 const DEFAULT_RATIOS = [
   {
     name: '1:1',
-    value: 1,
+    value: 1 / 1,
   },
   {
     name: '16:9',

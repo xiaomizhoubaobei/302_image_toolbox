@@ -1,33 +1,3 @@
-/**
- * @fileoverview 卡片组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了卡片组件，用于组织内容布局。
- *          该组件提供以下功能：
- *          - 提供卡片容器和子组件
- *          - 支持自定义内容布局
- *          - 提供标题、描述、内容和底部区域
- *          - 使用圆角和阴影效果
- *
- *          组件特性：
- *          - 模块化设计，可组合使用
- *          - 使用 Tailwind CSS 进行样式定制
- *          - 支持响应式布局
- *
- *          导出组件：
- *          - Card: 卡片主容器
- *          - CardHeader: 卡片头部
- *          - CardTitle: 卡片标题
- *          - CardDescription: 卡片描述
- *          - CardContent: 卡片内容
- *          - CardFooter: 卡片底部
- *
- *          依赖关系：
- *          - 依赖 @/lib/utils 的 cn 工具函数
- */
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

@@ -1,44 +1,3 @@
-/**
- * @fileoverview 侧边栏组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了侧边栏组件，用于从屏幕边缘滑出的面板。
- *          该组件提供以下功能：
- *          - 支持从四个方向滑出（上、下、左、右）
- *          - 显示侧边栏覆盖层
- *          - 支持自定义标题、描述和内容
- *          - 提供关闭按钮
- *          - 支持动画过渡效果
- *
- *          组件特性：
- *          - 基于 Radix UI Dialog 构建
- *          - 使用 class-variance-authority 管理方向变体
- *          - 使用 Tailwind CSS 进行样式定制
- *          - 支持响应式布局
- *          - 提供可访问性支持
- *          - 支持键盘关闭（ESC 键）
- *
- *          导出组件：
- *          - Sheet: 侧边栏根组件
- *          - SheetTrigger: 触发器组件
- *          - SheetPortal: 传送门组件
- *          - SheetOverlay: 覆盖层组件
- *          - SheetClose: 关闭按钮组件
- *          - SheetContent: 内容组件
- *          - SheetHeader: 头部组件
- *          - SheetFooter: 底部组件
- *          - SheetTitle: 标题组件
- *          - SheetDescription: 描述组件
- *
- *          依赖关系：
- *          - 依赖 @radix-ui/react-dialog
- *          - 依赖 @radix-ui/react-icons 的 Cross2Icon
- *          - 依赖 class-variance-authority
- *          - 依赖 @/lib/utils 的 cn 工具函数
- */
 "use client"
 
 import * as React from "react"
@@ -57,7 +16,7 @@ const SheetClose = SheetPrimitive.Close
 const SheetPortal = SheetPrimitive.Portal
 
 const SheetOverlay = React.forwardRef<
-  React.ComponentRef<typeof SheetPrimitive.Overlay>,
+  React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
@@ -95,7 +54,7 @@ interface SheetContentProps
     VariantProps<typeof sheetVariants> {}
 
 const SheetContent = React.forwardRef<
-  React.ComponentRef<typeof SheetPrimitive.Content>,
+  React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
 >(({ side = "right", className, children, ...props }, ref) => (
   <SheetPortal>
@@ -144,7 +103,7 @@ const SheetFooter = ({
 SheetFooter.displayName = "SheetFooter"
 
 const SheetTitle = React.forwardRef<
-  React.ComponentRef<typeof SheetPrimitive.Title>,
+  React.ElementRef<typeof SheetPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
@@ -156,7 +115,7 @@ const SheetTitle = React.forwardRef<
 SheetTitle.displayName = SheetPrimitive.Title.displayName
 
 const SheetDescription = React.forwardRef<
-  React.ComponentRef<typeof SheetPrimitive.Description>,
+  React.ElementRef<typeof SheetPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description

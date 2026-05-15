@@ -1,19 +1,3 @@
-/**
- * @fileoverview 拖放区域组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了拖放区域组件，用于处理文件拖放操作。
- *          该组件提供以下功能：
- *          - 监听文件拖放事件
- *          - 处理文件放置
- *          - 提供拖放状态回调
- *
- *          依赖关系：
- *          - 依赖 React hooks 进行状态管理
- */
 "use client"
 
 import { useEffect } from 'react'

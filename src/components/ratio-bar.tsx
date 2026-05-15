@@ -1,20 +1,3 @@
-/**
- * @fileoverview 比例栏组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了比例栏组件，用于选择视频比例和模型。
- *          该组件提供以下功能：
- *          - 显示模型选择按钮
- *          - 显示比例选择按钮
- *          - 根据模型自动选择比例
- *
- *          依赖关系：
- *          - 依赖 @/components/ui/button 模块获取按钮组件
- *          - 依赖 @/locales 获取模型列表、比例列表和国际化文本
- */
 import React from 'react'
 import { Button } from './ui/button'
 import { twMerge } from 'tailwind-merge'
@@ -49,7 +32,7 @@ function RatioBar({ payload, setPayload }: PropsData) {
     else if (payload.model === 'runway') {
       setPayload((preData: any) => { return { ...preData, ratio: 1280 / 768, label: '1280:768' } });
     } else {
-      setPayload((preData: any) => { return { ...preData, ratio: 1, label: '1:1' } });
+      setPayload((preData: any) => { return { ...preData, ratio: 1 / 1, label: '1:1' } });
     }
 
   }, [payload.model])
@@ -75,7 +58,7 @@ function RatioBar({ payload, setPayload }: PropsData) {
 
       <div className="flex space-x-2 text-md">
         {payload.model === 'kling' &&
-          ratios.slice(0, 3).map((it) =>
+          ratios.slice(0, 3).map((it, idx) =>
             <Button
               variant={it.value === payload.ratio ? 'default' : 'outline'}
               size={'sm'}
@@ -87,7 +70,7 @@ function RatioBar({ payload, setPayload }: PropsData) {
           )
         }
         {payload.model === 'runway' &&
-          ratios.slice(3, 4).map((it) =>
+          ratios.slice(3, 4).map((it, idx) =>
             <Button
               variant={it.value === payload.ratio ? 'default' : 'outline'}
               size={'sm'}
@@ -99,7 +82,7 @@ function RatioBar({ payload, setPayload }: PropsData) {
           )
         }
         {(payload.model === 'cog') &&
-          ratios.slice(4, 5).map((it) =>
+          ratios.slice(4, 5).map((it, idx) =>
             <Button
               variant={it.value === payload.ratio ? 'default' : 'outline'}
               size={'sm'}
@@ -111,7 +94,7 @@ function RatioBar({ payload, setPayload }: PropsData) {
           )
         }
         {(payload.model === 'luma') &&
-          ratios.slice(5, 6).map((it) =>
+          ratios.slice(5, 6).map((it, idx) =>
             <Button
               variant={it.value === payload.ratio ? 'default' : 'outline'}
               size={'sm'}

@@ -1,31 +1,16 @@
-/**
- * @fileoverview 图片裁剪组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了图片裁剪组件，用于裁剪图片。
- *          该组件提供以下功能：
- *          - 支持图片裁剪
- *          - 支持比例锁定
- *          - 支持缩放操作
- *
- *          依赖关系：
- *          - 依赖 react-mobile-cropper 模块进行图片裁剪
- */
-import React from 'react';
-import { Cropper } from 'react-mobile-cropper';
+import React, { useState } from 'react';
+import { CropperRef, Cropper } from 'react-mobile-cropper';
 import 'react-mobile-cropper/dist/style.css'
 
 interface PropsData {
+    initRatio?: number
     src: string
     setSrc: (src: string) => void
     payload: any,
     setPayload: (data: any) => void
 }
 
-const ImageCropper = ({ src, setSrc, payload, setPayload }: PropsData) => {
+const ImageCropper = ({ initRatio, src, setSrc, payload, setPayload }: PropsData) => {
     const cropperRef = React.useRef<any>(null);
     const [image, setImage] = React.useState<any>(null)
     const [imageRatio, setImageRatio] = React.useState(0)
@@ -68,11 +53,11 @@ const ImageCropper = ({ src, setSrc, payload, setPayload }: PropsData) => {
         }
     }, [payload.ratio])
 
-    const onChange = () => {
+    const onChange = (cropper: CropperRef) => {
         setPayload((preData: any) => { return { ...preData, canvas: cropperRef.current.getCanvas() } });
     };
 
-    if (!image) return <img src={src} alt="Cropped image" className='w-full h-auto'></img>
+    if (!image) return <img src={src} className='w-full h-auto'></img>
 
     return (
         <Cropper
@@ -82,7 +67,7 @@ const ImageCropper = ({ src, setSrc, payload, setPayload }: PropsData) => {
             stencilProps={{
                 aspectRatio: ratio || {
                     minimum: 1 / 16,
-                    maximum: 16,
+                    maximum: 16 / 1,
                 },
 
                 movable: false,

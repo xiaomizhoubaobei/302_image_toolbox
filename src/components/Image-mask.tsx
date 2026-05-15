@@ -1,30 +1,44 @@
-/**
- * @fileoverview 图片遮罩组件
- * @author 祁筱欣
- * @date 2026-02-06
- * @since 2026-02-06
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @LICENSE AGPL-3.0 license
- * @remark 本模块实现了图片遮罩组件，用于在图片上绘制遮罩。
- *          该组件提供以下功能：
- *          - 支持画笔绘制
- *          - 支持橡皮擦
- *          - 支持画笔大小调整
- *          - 支持撤销操作
- *          - 生成遮罩文件
- *
- *          依赖关系：
- *          - 依赖 react-konva 模块进行画布绘制
- *          - 依赖 @/components/ui/slider 模块获取滑块组件
- *          - 依赖 @/components/zoom-box 模块获取缩放组件
- */
 import React, { useState, useRef, useEffect } from 'react'
 import { Stage, Layer, Line } from 'react-konva'
 import Konva from 'konva'
+import { twMerge } from 'tailwind-merge'
 import { Slider } from "@/components/ui/slider"
 import { LiaUndoAltSolid } from "react-icons/lia";
 import ZoomBox from './zoom-box'
-import ImageManager from "@/utils/Image"
+
+
+
+export function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  type = 'image/png' as 'image/jpeg' | 'image/png',
+  quality?: number
+): Promise<Blob | null> {
+  return new Promise((res) => {
+    canvas.toBlob((blob) => res(blob), type, quality)
+  })
+}
+
+export function downloadImage(uri: string, name: string) {
+  const link = document.createElement('a')
+  link.href = uri
+  link.download = name
+
+  link.dispatchEvent(
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    })
+  )
+
+  setTimeout(() => {
+    link.remove()
+  }, 100)
+}
+
+type Result = {
+  base64: string
+}
 
 type Line = { tool: string; brush: number; points: number[] }
 
@@ -101,11 +115,12 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
     const current = stageRef.current as HTMLCanvasElement | null
     if (current) {
       const maskCanvas = (await resetSize(resetColor(stageRef.current))) as HTMLCanvasElement
-      const maskBlob = await ImageManager.canvasToBlob(maskCanvas)
+      const maskBlob = await canvasToBlob(maskCanvas)
       if (!maskBlob) return null
-      return new File([maskBlob], 'mask.png', {
+      const maskFile = new File([maskBlob], 'mask.png', {
         type: 'image/png',
       })
+      return maskFile
     }
   }
 
@@ -150,14 +165,12 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
     setPayload((preData: any) => { return { ...preData, mask: maskFile } });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const undo = () => {
     if (historyIndex === 0) return
     setLines(history[historyIndex - 1])
     setHistoryIndex(historyIndex - 1)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const redo = () => {
     if (historyIndex === history.length - 1) return
     setLines(history[historyIndex + 1])
@@ -176,6 +189,16 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
     if (value) {
       setBrushSize(value[0])
     }
+  }
+
+  const onReset = () => {
+    setSrc('')
+  }
+
+  const onGenerate = async () => {
+    if (!src) return
+    const mask = await getMaskFile()
+    if (!mask) return
   }
 
   // init
