@@ -57,7 +57,7 @@
 ## 环境要求
 
 - Node.js >= 18（推荐 v20）
-- npm @10.1.0
+- Yarn @1.22.22
 - Docker（用于生产构建）
 - TypeScript 编译支持（VSCode 或其他 IDE）
 
@@ -85,9 +85,9 @@ NEXT_PUBLIC_UPLOAD_API_URL=https://dash-api.proxy302.com/gpt/api/upload/gpt/imag
 ### 开发环境
 
 1. 克隆项目 `git clone git@github.com:302ai/302_image_toolbox.git`
-2. 安装依赖 `npm install`
+2. 安装依赖 `yarn install`
 3. 配置302的API KEY 参考.env.example
-4. 运行项目 `npm run dev`
+4. 运行项目 `yarn dev`
 5. 在浏览器中访问 `http://localhost:3000`
 
 ### 生产部署
@@ -107,13 +107,13 @@ docker run -p 3000:3000 image-toolbox
 
 ```bash
 # 安装依赖
-npm install
+yarn install
 
 # 构建生产版本
-npm run build
+yarn build
 
 # 启动服务
-npm start
+yarn start
 ```
 
 ## 目录结构

@@ -2,26 +2,23 @@ FROM node:lts@sha256:050bf2bbe33c1d6754e060bec89378a79ed831f04a7bb1a53fe45e997df
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 
 # Install necessary packages for build
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  g++ \
-  make \
-  python3 \
+RUN apt-get update && apt-get install -y --no-install-recommends 
+  g++ 
+  make 
+  python3 
   && rm -rf /var/lib/apt/lists/*
 
-# 配置 npm 国内镜像源并设置超时/重试
-RUN npm config set registry https://registry.npmmirror.com \
-    && npm config set fetch-retries 5 \
-    && npm config set fetch-retry-mintimeout 20000 \
-    && npm config set fetch-retry-maxtimeout 120000
+# 配置 yarn 国内镜像源
+RUN yarn config set registry https://registry.npmmirror.com
 
-RUN npm install
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
 # -------- Production Image Setup --------
 FROM node:lts@sha256:050bf2bbe33c1d6754e060bec89378a79ed831f04a7bb1a53fe45e997df7b3bb AS production
@@ -30,18 +27,15 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=build /app/package.json /app/package-lock.json ./
+COPY --from=build /app/package.json /app/yarn.lock ./
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/static ./.next/static
 
-# 配置 npm 国内镜像源并设置超时/重试
-RUN npm config set registry https://registry.npmmirror.com \
-    && npm config set fetch-retries 5 \
-    && npm config set fetch-retry-mintimeout 20000 \
-    && npm config set fetch-retry-maxtimeout 120000
+# 配置 yarn 国内镜像源
+RUN yarn config set registry https://registry.npmmirror.com
 
-RUN npm install --only=production
+RUN yarn install --production
 
 EXPOSE 3000
 
