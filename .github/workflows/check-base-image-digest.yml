@@ -95,8 +95,7 @@ jobs:
               '```',
               '',
               `> 此 Issue 由 GitHub Actions 自动创建`,
-            ].join('
-');
+              ].join('\n');
 
             await github.rest.issues.create({
               owner: context.repo.owner,
