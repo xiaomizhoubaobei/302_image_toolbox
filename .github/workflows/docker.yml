@@ -36,23 +36,23 @@ jobs:
                   echo "已提取版本: $VERSION"
 
             - name: 设置 Docker Buildx
-              uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+              uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
 
             - name: 登录 DockerHub
-              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
             - name: 登录 GitHub 容器注册表
-              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
             - name: 登录阿里云容器注册表
-              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
               with:
                   registry: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com
                   username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
@@ -88,7 +88,7 @@ jobs:
 
             - name: 构建并推送
               id: build
-              uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+              uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
               with:
                 context: .
                 platforms: linux/amd64,linux/arm64
@@ -115,7 +115,7 @@ jobs:
                 provenance: true
 
             - name: 安装 cosign
-              uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+              uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
 
             - name: 使用 cosign 签名镜像（无密钥模式）
               env:
