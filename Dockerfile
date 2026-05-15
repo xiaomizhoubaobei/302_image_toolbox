@@ -1,4 +1,4 @@
-FROM node:26.1-alpine AS build
+FROM node:lts@sha256:050bf2bbe33c1d6754e060bec89378a79ed831f04a7bb1a53fe45e997df7b3bb AS build
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # -------- Production Image Setup --------
-FROM node:26.1-alpine AS production
+FROM node:lts@sha256:050bf2bbe33c1d6754e060bec89378a79ed831f04a7bb1a53fe45e997df7b3bb AS production
 
 ENV NODE_ENV=production
 
