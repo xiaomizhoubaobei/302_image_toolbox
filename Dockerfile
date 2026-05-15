@@ -5,10 +5,11 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install necessary packages for build
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
   g++ \
   make \
-  python3
+  python3 \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN npm install
 
