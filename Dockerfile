@@ -5,10 +5,10 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install necessary packages for build
-RUN apt-get update && apt-get install -y --no-install-recommends 
-  g++ 
-  make 
-  python3 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  g++ \
+  make \
+  python3 \
   && rm -rf /var/lib/apt/lists/*
 
 # 配置 yarn 华为云镜像源
