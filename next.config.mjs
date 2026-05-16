@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  // 添加编译优化选项
-  swcMinify: true,
   reactStrictMode: true,
   
   webpack(config) {
