@@ -5096,10 +5096,10 @@ react-advanced-cropper@~0.19.3:
     classnames "^2.2.6"
     tslib "^2.4.0"
 
-react-compare-slider@^3.1.0:
-  version "3.1.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/react-compare-slider/-/react-compare-slider-3.1.0.tgz#a4cf1c4db2203d894a7f05b76310f468db2d0b8f"
-  integrity sha512-TQVbZYmYyTIeKRmQciVXCmUwHjTThQTON7GfWfzMAOInRRG9tCiQnVXnCUd5DJ5l3Hngh4IEzOb9TG82gjoEhQ==
+react-compare-slider@^4.0.0:
+  version "4.0.0"
+  resolved "https://repo.huaweicloud.com/repository/npm/react-compare-slider/-/react-compare-slider-4.0.0.tgz#dbd73439c1033d171623e311f6d374db22b04d0b"
+  integrity sha512-XNpwfWa8OHvJZIsC+ywhjpRWX8VCY8fIavQ82R63Tever1pQndhicr0ecDuU69GjA+YjesoV7LX3QnKsECtMDw==
 
 react-dom@^18:
   version "18.3.1"
