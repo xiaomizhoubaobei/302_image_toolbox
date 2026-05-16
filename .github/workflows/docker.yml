@@ -76,9 +76,9 @@ jobs:
               uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
               with:
                 images: |
-                  ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
-                  ghcr.io/${{ github.repository }}/302_llm_playground
-                  crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
+                  ${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox
+                  ghcr.io/${{ github.repository }}/302_image_toolbox
+                  crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_image_toolbox
                 # 关闭所有默认生成器
                 flavor: |
                   latest=false
@@ -95,17 +95,17 @@ jobs:
                 push: true
                 tags: ${{ steps.meta.outputs.tags }}
                 labels: |
-                  org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/LLM-Playground
-                  org.opencontainers.image.description=LLM Playground - 一个用于测试和实验大语言模型的交互式平台
+                  org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/302_image_toolbox
+                  org.opencontainers.image.description=302 Image Toolbox - 图片工具箱
                   org.opencontainers.image.licenses=AGPL-3.0
-                  org.opencontainers.image.title=LLM Playground
+                  org.opencontainers.image.title=302 Image Toolbox
                   org.opencontainers.image.maintainer=祁筱欣
                   org.opencontainers.image.version=${{ steps.version.outputs.VERSION }}
                   org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
                   org.opencontainers.image.revision=${{ github.sha }}
                   org.opencontainers.image.vendor=xiaomizhoubaobei
                   org.opencontainers.image.authors=qixiaoxin@stu.sqxy.edu.cn
-                  build.url=https://github.com/xiaomizhoubaobei/LLM-Playground/actions/runs/${{ github.run_id }}
+                  build.url=https://github.com/xiaomizhoubaobei/302_image_toolbox/actions/runs/${{ github.run_id }}
                   dependencies.node=${{ steps.deps.outputs.NODE_VERSION }}
                   org.opencontainers.image.nextjs=${{ steps.deps.outputs.NEXTJS_VERSION }}
                   org.opencontainers.image.yarn=${{ steps.deps.outputs.YARN_VERSION }}
@@ -135,14 +135,14 @@ jobs:
             - name: 证明 DockerHub 镜像
               uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
               with:
-                subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
+                subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_image_toolbox
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
             - name: 证明 GHCR 镜像
               uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
               with:
-                subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
+                subject-name: ghcr.io/${{ github.repository }}/302_image_toolbox
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
