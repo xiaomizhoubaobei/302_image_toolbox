@@ -4,8 +4,15 @@ export default class SystemManager {
 	// 合并数据
 	static mergeData = (target: any, source: any) => {
 		Object.keys(source).forEach(function (key) {
+			// 防止原型污染：过滤危险属性名
+			if (key === "__proto__" || key === "constructor") return;
 			if (source[key] && typeof source[key] === "object") {
-				SystemManager.mergeData((target[key] = target[key] || {}), source[key]);
+				if (target.hasOwnProperty(key)) {
+					SystemManager.mergeData(target[key], source[key]);
+				} else {
+					target[key] = {};
+					SystemManager.mergeData(target[key], source[key]);
+				}
 				return;
 			}
 			target[key] = source[key];
