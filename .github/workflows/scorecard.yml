@@ -72,7 +72,7 @@ jobs:
       # 将结果作为构件上传（可选）。注释掉将禁用运行结果以 SARIF
       # 格式上传到仓库 Actions 标签页。
       - name: "上传构件"
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SARIF file
           path: results.sarif
