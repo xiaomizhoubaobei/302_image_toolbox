@@ -1,5 +1,4 @@
-import { Animation } from "konva/lib/Animation";
-import React, { Component, useEffect, useRef } from "react";
+import React from "react";
 import { GoZoomIn } from "react-icons/go";
 import { GoZoomOut } from "react-icons/go";
 import { GrPowerReset } from "react-icons/gr";
@@ -10,7 +9,15 @@ import {
   useControls,
 } from "react-zoom-pan-pinch";
 
-const Controls = ({ tool }: any) => {
+interface Tool {
+  name: string;
+}
+
+interface ControlsProps {
+  tool?: Tool;
+}
+
+const Controls = ({ tool }: ControlsProps) => {
   const { zoomIn, zoomOut, resetTransform } = useControls();
 
   React.useEffect(() => {
@@ -43,8 +50,15 @@ const Controls = ({ tool }: any) => {
   );
 };
 
-const ZoomBox = ({ move, tool, result, children }: any) => {
-  if (['remove-obj', 'inpaint-img', 'uncrop',].includes(tool?.name) && !result) {
+interface ZoomBoxProps {
+  move?: boolean;
+  tool?: Tool;
+  result?: unknown;
+  children?: React.ReactNode;
+}
+
+const ZoomBox = ({ move, tool, result, children }: ZoomBoxProps) => {
+  if (['remove-obj', 'inpaint-img', 'uncrop'].includes(tool?.name ?? '') && !result) {
     return children
   }
 

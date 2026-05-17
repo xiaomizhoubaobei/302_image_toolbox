@@ -5,11 +5,11 @@ import Locale from "@/locales"
 
 const ALLOWED_FILES = ['image/png', 'image/jpeg', 'image/webp'];
 
-interface UplodaButtonProps {
+interface UploadButtonProps {
   setFile: (file: File | null) => void
 }
 
-function UploadButton({ setFile }: UplodaButtonProps) {
+function UploadButton({ setFile }: UploadButtonProps) {
   const fileRef = React.useRef<HTMLInputElement | null>(null)
 
   // 选中

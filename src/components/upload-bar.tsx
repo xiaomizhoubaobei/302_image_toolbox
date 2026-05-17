@@ -7,12 +7,16 @@ import Locale from "@/locales"
 
 const ALLOWED_FILES = ['image/png', 'image/jpeg', 'image/webp'];
 
-interface UplodaBarProps {
-  payload: any
-  setPayload: (data: any) => void
+interface UploadBarPayload {
+  mask?: File | null
 }
 
-function UploadBar({ payload, setPayload }: UplodaBarProps) {
+interface UploadBarProps {
+  payload: UploadBarPayload
+  setPayload: React.Dispatch<React.SetStateAction<UploadBarPayload>>
+}
+
+function UploadBar({ payload, setPayload }: UploadBarProps) {
   const fileRef = React.useRef<HTMLInputElement | null>(null)
 
   // 选中
@@ -22,7 +26,7 @@ function UploadBar({ payload, setPayload }: UplodaBarProps) {
     )[0]
 
     if (file) {
-      setPayload((preData: any) => { return { ...preData, mask: file } });
+      setPayload((preData) => { return { ...preData, mask: file } });
     }
 
     if (fileRef.current) {
@@ -45,7 +49,7 @@ function UploadBar({ payload, setPayload }: UplodaBarProps) {
               <IoIosLink className='text-lg' />
               <p className='flex-1 text-slate-500 text-sm overflow-hidden'>{payload.mask.name}</p>
             </div>
-            <div className='px-1' onClick={() => setPayload((preData: any) => { return { ...preData, mask: null } })}>
+            <div className='px-1' onClick={() => setPayload((preData) => { return { ...preData, mask: null } })}>
               <MdOutlineDeleteOutline className='text-xl text-red-500 cursor-pointer' />
             </div>
           </div>

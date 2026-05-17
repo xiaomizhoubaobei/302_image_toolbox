@@ -6,9 +6,13 @@ import Locale from "@/locales"
 
 const ALLOWED_FILES = ['image/png', 'image/jpeg', 'image/webp'];
 
+interface UploadImagesPayload {
+  images: HTMLImageElement[]
+}
+
 interface PropsData {
-  payload: any
-  setPayload: (data: any) => void
+  payload: UploadImagesPayload
+  setPayload: React.Dispatch<React.SetStateAction<UploadImagesPayload>>
 }
 
 function UploadImages({ payload, setPayload }: PropsData) {
@@ -26,7 +30,7 @@ function UploadImages({ payload, setPayload }: PropsData) {
       img.onload = () => {
         if (img) {
           const newImages = [...payload.images, img]
-          setPayload((preData: any) => { return { ...preData, images: newImages } });
+          setPayload((preData) => { return { ...preData, images: newImages } });
         }
       }
       img.src = src
@@ -50,7 +54,7 @@ function UploadImages({ payload, setPayload }: PropsData) {
 
       <Button size={'sm'}
         className='bg-red-500 hover:bg-red-600'
-        onClick={() => setPayload((preData: any) => { return { ...preData, images: [] } })}
+        onClick={() => setPayload((preData) => { return { ...preData, images: [] } })}
         disabled={payload.images.length <= 0}
       >
         <MdOutlineDeleteOutline />
