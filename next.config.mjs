@@ -2,6 +2,8 @@
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+
+  turbopack: {},
   
   webpack(config) {
     // 获取处理SVG导入的现有规则
