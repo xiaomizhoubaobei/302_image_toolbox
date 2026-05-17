@@ -35,7 +35,7 @@ function RatioBar({ payload, setPayload }: PropsData) {
       setPayload((preData: any) => { return { ...preData, ratio: 1 / 1, label: '1:1' } });
     }
 
-  }, [payload.model])
+  }, [payload.model, setPayload])
 
   return (
     <div className='w-full flex flex-col space-y-2 justify-center items-center '>

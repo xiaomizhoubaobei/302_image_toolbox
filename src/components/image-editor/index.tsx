@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import cn from "classnames";
 import {
   Cropper,
@@ -106,7 +107,7 @@ export const ImageEditor: React.FC<PropsData> = ({ src, setSrc, setPayload }) =>
 
   useEffect(() => {
     onReset()
-    const img = new Image()
+    const img = new window.Image()
     img.src = src
     img.onload = () => {
       setTimeout(() => {
@@ -120,7 +121,7 @@ export const ImageEditor: React.FC<PropsData> = ({ src, setSrc, setPayload }) =>
   }, [src])
 
 
-  if (!image) return <img src={src} className='w-full h-auto'></img>
+  if (!image) return <Image src={src} className='w-full h-auto' alt="图片加载中" width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized />
 
 
   return (

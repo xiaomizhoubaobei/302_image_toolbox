@@ -28,7 +28,7 @@ function UploadButton({ setFile }: UplodaButtonProps) {
     if (fileRef.current) {
       fileRef.current.value = ''
     }
-  }, [])
+  }, [setFile])
 
 
   return (

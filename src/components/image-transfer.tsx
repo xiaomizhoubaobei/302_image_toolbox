@@ -179,7 +179,7 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
   }
 
   // 继续任务
-  const handleContinue = async () => {
+  const handleContinue = React.useCallback(async () => {
     // 设置媒体, 视频截图不保存result
     let isSaveResult = true
     if (media === 'video') {
@@ -207,10 +207,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
     updTask({})
 
 
-  }
+  }, [media, result, tool.name, setResult, setMedia, setVideoSrc, setTextContent, setSrc, setStatus, setPayload])
 
   // 重置状态
-  const handleReset = async () => {
+  const handleReset = React.useCallback(async () => {
     setResult('')
     setVideoSrc('')
     setTextContent('')
@@ -223,7 +223,7 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
       }, 30)
     }
     updTask({})
-  }
+  }, [tool.name, setResult, setVideoSrc, setTextContent, setStatus, setPayload])
 
   // 退出编辑
   const handleStop = async () => {
@@ -236,12 +236,12 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
     if (file) {
       handleReset()
     }
-  }, [file])
+  }, [file, handleReset])
 
   // 工具变化, 继续任务
   React.useEffect(() => {
     handleContinue()
-  }, [tool])
+  }, [tool, handleContinue])
 
   // 原图变化，重设容器尺寸
   React.useEffect(() => {
@@ -389,16 +389,16 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
                 <div className={twMerge("w-full relative ", media === 'image' ? 'mosaic-bg' : '')}>
 
                   {src && !result &&
-                    <img alt="image" src={src}
+                    <NextImage alt="image" src={src}
                       className={twMerge('w-full h-auto m-auto')}
-                    >
-                    </img>
+                      width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized
+                    />
                   }
                   {src && result &&
-                    <img alt="image" src={result}
+                    <NextImage alt="image" src={result}
                       className={twMerge('w-full h-auto m-auto opacity-0')}
-                    >
-                    </img>
+                      width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized
+                    />
                   }
 
                   {result &&
@@ -429,10 +429,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
                   }
 
                   {result &&
-                    <img width={200} height={200} alt="image" src={result} className={
+                    <NextImage alt="image" src={result} className={
                       twMerge('w-full h-auto m-auto')}
-                    >
-                    </img>
+                      width={200} height={200} unoptimized
+                    />
                   }
 
                   {status === 'Pending' &&
@@ -452,10 +452,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
                   }
 
                   {result &&
-                    <img alt="result image" src={result} className={
+                    <NextImage alt="result image" src={result} className={
                       twMerge('w-full h-auto m-auto')}
-                    >
-                    </img>
+                      width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized
+                    />
                   }
 
                   {status === 'Pending' &&
@@ -476,10 +476,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
                   }
 
                   {result &&
-                    <img width={200} height={200} alt="image" src={result} className={
+                    <NextImage alt="image" src={result} className={
                       twMerge('w-full h-auto m-auto')}
-                    >
-                    </img>
+                      width={200} height={200} unoptimized
+                    />
                   }
 
                   {status === 'Pending' &&
@@ -524,10 +524,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
                   }
 
                   {media === 'video' &&
-                    <img alt="image" src={result}
+                    <NextImage alt="image" src={result}
                       className={twMerge('w-full h-auto m-auto', status !== 'Pending' ? 'opacity-0' : '')}
-                    >
-                    </img>
+                      width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized
+                    />
                   }
 
                   {videoSrc && media === 'video' &&
@@ -552,10 +552,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
               {['read-text'].includes(tool.name) &&
                 <div className={twMerge("w-full h-full relative flex items-center justify-center")}>
                   {src &&
-                    <img width={200} height={200} alt="image" src={src}
+                    <NextImage alt="image" src={src}
                       className={twMerge('w-full h-auto m-auto')}
-                    >
-                    </img>
+                      width={200} height={200} unoptimized
+                    />
                   }
 
                   {status === 'Pending' &&
@@ -574,10 +574,10 @@ function ImageTransfer({ expand, file, tool, readRef, onGenerateImage, onGenerat
                   }
 
                   {result &&
-                    <img width={200} height={200} alt="image" src={result} className={
+                    <NextImage alt="image" src={result} className={
                       twMerge('w-full h-auto m-auto')}
-                    >
-                    </img>
+                      width={200} height={200} unoptimized
+                    />
                   }
 
                   {status === 'Pending' &&

@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { Stage, Layer, Line } from 'react-konva'
 import Konva from 'konva'
 import { twMerge } from 'tailwind-merge'
@@ -90,7 +91,7 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
   const resetSize = async (originCanvas: any) => {
     return new Promise((resolve) => {
       const originUrl = originCanvas.toDataURL('image/png')
-      const originImage = new Image()
+      const originImage = new window.Image()
       originImage.onload = () => {
         const newCanvas = document.createElement('canvas')
         const newContext = newCanvas.getContext('2d')
@@ -177,13 +178,13 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
     setHistoryIndex(historyIndex + 1)
   }
 
-  const clear = () => {
+  const clear = useCallback(() => {
     setLines([])
     setHistory([[]])
     setHistoryIndex(0)
     setTool('pen')
     setPayload((preData: any) => { return { ...preData, mask: null } });
-  }
+  }, [setPayload])
 
   const brush = (value: any) => {
     if (value) {
@@ -205,15 +206,15 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
   useEffect(() => {
     if (!src) return
     setSrc(src)
-    const img = new Image()
+    const img = new window.Image()
     img.src = src
     img.onload = () => setImage(img)
-  }, [])
+  }, [src, setSrc])
 
   // reset
   useEffect(() => {
     clear()
-  }, [src])
+  }, [src, clear])
 
   return (
     <div className="image-mask w-full h-full relative">
@@ -232,7 +233,7 @@ const ImageMask: React.FC<PropsData> = ({ maxWidth, src, setSrc, setPayload }) =
 
       <ZoomBox move={false}>
         <div ref={maskRef} className="w-full relative" style={{ maxWidth: maxWidth }}>
-          <img className="w-full h-auto " src={src} alt="Mask Background" />
+          <Image className="w-full h-auto" src={src} alt="Mask Background" width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized />
           <div className='absolute top-0 left-0 w-full h-full'>
             <Stage
               width={maskRef.current?.offsetWidth}

@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 interface PropsData {
   src: string
   setSrc: (src: string) => void
@@ -10,7 +12,7 @@ export function ImageViewer({ src, setSrc }: PropsData) {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="show">
-        <img style={{ maxWidth: '100%', height: 'auto' }} src={src} alt="" />
+        <Image style={{ maxWidth: '100%', height: 'auto' }} src={src} alt="图片查看器" width={800} height={600} unoptimized />
       </div>
       <div className="action" onClick={() => setSrc('')}>close</div>
     </div>

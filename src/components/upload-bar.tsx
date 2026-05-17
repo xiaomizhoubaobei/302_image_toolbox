@@ -28,7 +28,7 @@ function UploadBar({ payload, setPayload }: UplodaBarProps) {
     if (fileRef.current) {
       fileRef.current.value = ''
     }
-  }, [])
+  }, [setPayload])
 
 
   return (

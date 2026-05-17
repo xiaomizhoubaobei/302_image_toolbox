@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, CSSProperties, useLayoutEffect } from 'react';
+import React, { forwardRef, useRef, CSSProperties, useLayoutEffect, useCallback } from 'react';
 import cn from 'classnames';
 import { mergeRefs } from 'react-advanced-cropper';
 import './AdjustableImage.scss';
@@ -19,7 +19,7 @@ export const AdjustableImage = forwardRef<HTMLCanvasElement, Props>(
 		const imageRef = useRef<HTMLImageElement>(null);
 		const canvasRef = useRef<HTMLCanvasElement>(null);
 
-		const drawImage = () => {
+		const drawImage = useCallback(() => {
 			const image = imageRef.current;
 			const canvas = canvasRef.current;
 			if (canvas && image && image.complete) {
@@ -38,11 +38,11 @@ export const AdjustableImage = forwardRef<HTMLCanvasElement, Props>(
 					ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
 				}
 			}
-		};
+		}, [brightness, saturation, hue, contrast]);
 
 		useLayoutEffect(() => {
 			drawImage();
-		}, [src, brightness, saturation, hue, contrast]);
+		}, [src, drawImage]);
 
 		return (
 			<>
@@ -53,6 +53,7 @@ export const AdjustableImage = forwardRef<HTMLCanvasElement, Props>(
 					style={style}
 				/>
 				{src ? (
+					// eslint-disable-next-line @next/next/no-img-element
 					<img
 						key={`${src}-img`}
 						ref={imageRef}
@@ -60,9 +61,9 @@ export const AdjustableImage = forwardRef<HTMLCanvasElement, Props>(
 						src={src}
 						crossOrigin={crossOrigin === true ? 'anonymous' : crossOrigin || undefined}
 						onLoad={drawImage}
+						alt=""
 					/>
-				) : null}
-			</>
+				) : null}			</>
 		);
 	},
 );

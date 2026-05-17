@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { CropperRef, Cropper } from 'react-mobile-cropper';
 import 'react-mobile-cropper/dist/style.css'
 
@@ -21,7 +22,7 @@ const ImageCropper = ({ initRatio, src, setSrc, payload, setPayload }: PropsData
         if (cropperRef.current) {
             cropperRef.current.refresh();
         }
-        const img = new Image()
+        const img = new window.Image()
         img.src = src
         img.onload = () => {
             setTimeout(() => {
@@ -51,13 +52,13 @@ const ImageCropper = ({ initRatio, src, setSrc, payload, setPayload }: PropsData
                 setPayload((preData: any) => { return { ...preData, canvas: cropperRef.current.getCanvas() } });
             }, 30)
         }
-    }, [payload.ratio])
+    }, [payload.ratio, imageRatio, setPayload])
 
     const onChange = (cropper: CropperRef) => {
         setPayload((preData: any) => { return { ...preData, canvas: cropperRef.current.getCanvas() } });
     };
 
-    if (!image) return <img src={src} className='w-full h-auto'></img>
+    if (!image) return <Image src={src} className='w-full h-auto' alt="图片加载中" width={500} height={300} style={{ width: '100%', height: 'auto' }} unoptimized />
 
     return (
         <Cropper

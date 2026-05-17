@@ -1,6 +1,6 @@
 'use client'
 import ImageManager from "@/utils/Image";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Stage, Layer, Rect, Image as Img, Transformer, } from "react-konva";
 
 interface ImageEditorProps {
@@ -82,6 +82,17 @@ const ImageStitching: React.FC<ImageEditorProps> = ({ src, setSrc, payload, setP
     }
   };
 
+  const handleActionDone = useCallback(async () => {
+    if (!stageRef.current) return
+    setImageDrag(false)
+    setTimeout(async () => {
+      const local = stageRef.current.toDataURL({ pixelRatio: 2 });
+      setPayload((preData: any) => { return { ...preData, mask: local } });
+      setImageDrag(true)
+      await ImageManager.loadImage(local)
+    }, 30)
+  }, [setPayload])
+
   // resize
   useEffect(() => {
     setContainerWidth(10)
@@ -107,17 +118,17 @@ const ImageStitching: React.FC<ImageEditorProps> = ({ src, setSrc, payload, setP
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [image, payload.ratio]);
+  }, [image, payload.ratio, handleActionDone]);
 
   useEffect(() => {
     handleActionDone()
-  }, [payload.images])
+  }, [payload.images, handleActionDone])
 
 
 
   useEffect(() => {
     // hook
-    const img = new Image()
+    const img = new window.Image()
     img.onload = () => {
       setImage(img)
       if (img) {
@@ -126,19 +137,7 @@ const ImageStitching: React.FC<ImageEditorProps> = ({ src, setSrc, payload, setP
       }
     }
     img.src = src
-  }, [src])
-
-
-  const handleActionDone = async () => {
-    if (!stageRef.current) return
-    setImageDrag(false)
-    setTimeout(async () => {
-      const local = stageRef.current.toDataURL({ pixelRatio: 2 });
-      setPayload((preData: any) => { return { ...preData, mask: local } });
-      setImageDrag(true)
-      await ImageManager.loadImage(local)
-    }, 30)
-  }
+  }, [src, setPayload])
 
 
   if (!image) return null
