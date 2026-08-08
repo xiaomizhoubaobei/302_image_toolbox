@@ -28,7 +28,7 @@
     "context-filter-polyfill": "^0.3.13",
     "konva": "^10.3.0",
     "lodash": "^4.18.0",
-    "next": "16.2.6",
+    "next": "16.2.11",
     "react": "^18",
     "react-compare-slider": "^4.0.0",
     "react-dom": "^18",
