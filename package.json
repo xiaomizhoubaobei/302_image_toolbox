@@ -54,8 +54,11 @@
     "@types/react-dom": "^18",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
-    "postcss": "^8",
+    "postcss": "^8.5.12",
     "tailwindcss": "^4.3.0",
     "typescript": "^5"
+  },
+  "resolutions": {
+    "postcss": "^8.5.12"
   }
 }
