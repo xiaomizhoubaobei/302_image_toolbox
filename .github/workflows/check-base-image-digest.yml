@@ -5,6 +5,11 @@ on:
     - cron: '0 0 * * *'  # 每天 UTC 00:00 运行
   workflow_dispatch:  # 允许手动触发
 
+# 授予 GITHUB_TOKEN 创建 Issue 的权限（schedule 触发的 workflow 默认无 issues:write）
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   check-digest:
     runs-on: ubuntu-latest
