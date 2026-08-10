@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
-    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/lodash": "^4.17.7",
     "@types/node": "^25",
     "@types/react": "^18",
