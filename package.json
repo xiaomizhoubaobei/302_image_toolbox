@@ -43,7 +43,7 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "webpack": "^5.93.0",
-    "zustand": "^4.5.4"
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
