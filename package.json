@@ -38,7 +38,7 @@
     "react-mobile-cropper": "^0.10.0",
     "react-player": "^3.4.0",
     "react-zoom-pan-pinch": "^3.6.1",
-    "sass": "^1.77.8",
+    "sass": "^1.102.0",
     "sharp": "^0.35.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
