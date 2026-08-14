@@ -81,9 +81,9 @@ NEXT_PUBLIC_UPLOAD_API_URL=https://dash-api.proxy302.com/gpt/api/upload/gpt/imag
 ### 开发环境
 
 1. 克隆项目 `git clone git@github.com:302ai/302_image_toolbox.git`
-2. 安装依赖 `yarn install`
+2. 安装依赖 `pnpm install`
 3. 配置302的API KEY 参考.env.example
-4. 运行项目 `yarn dev`
+4. 运行项目 `pnpm dev`
 5. 在浏览器中访问 `http://localhost:3000`
 
 ### 生产部署
@@ -103,13 +103,13 @@ docker run -p 3000:3000 image-toolbox
 
 ```bash
 # 安装依赖
-yarn install
+pnpm install
 
 # 构建生产版本
-yarn build
+pnpm build
 
 # 启动服务
-yarn start
+pnpm start
 ```
 
 ## 目录结构

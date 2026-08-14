@@ -63,13 +63,13 @@ jobs:
               run: |
                   NODE_VERSION=$(node -p "require('./package.json').devDependencies['@types/node'].replace('^', '')")
                   NEXTJS_VERSION=$(node -p "require('./package.json').dependencies.next.replace('^', '')")
-                  YARN_VERSION=$(node -p "require('./package.json').packageManager.replace('yarn@', '')")
+                  PNPM_VERSION=$(node -p "require('./package.json').packageManager.replace('pnpm@', '')")
                   TYPESCRIPT_VERSION=$(node -p "require('./package.json').devDependencies.typescript.replace('^', '')")
                   echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_OUTPUT
                   echo "NEXTJS_VERSION=$NEXTJS_VERSION" >> $GITHUB_OUTPUT
-                  echo "YARN_VERSION=$YARN_VERSION" >> $GITHUB_OUTPUT
+                  echo "PNPM_VERSION=$PNPM_VERSION" >> $GITHUB_OUTPUT
                   echo "TYPESCRIPT_VERSION=$TYPESCRIPT_VERSION" >> $GITHUB_OUTPUT
-                  echo "Node: $NODE_VERSION, Next.js: $NEXTJS_VERSION, Yarn: $YARN_VERSION, TypeScript: $TYPESCRIPT_VERSION"
+                  echo "Node: $NODE_VERSION, Next.js: $NEXTJS_VERSION, Pnpm: $PNPM_VERSION, TypeScript: $TYPESCRIPT_VERSION"
 
             - name: Docker 元数据
               id: meta
@@ -108,7 +108,7 @@ jobs:
                   build.url=https://github.com/xiaomizhoubaobei/302_image_toolbox/actions/runs/${{ github.run_id }}
                   dependencies.node=${{ steps.deps.outputs.NODE_VERSION }}
                   org.opencontainers.image.nextjs=${{ steps.deps.outputs.NEXTJS_VERSION }}
-                  org.opencontainers.image.yarn=${{ steps.deps.outputs.YARN_VERSION }}
+                  org.opencontainers.image.pnpm=${{ steps.deps.outputs.PNPM_VERSION }}
                   org.opencontainers.image.typescript=${{ steps.deps.outputs.TYPESCRIPT_VERSION }}
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
