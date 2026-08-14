@@ -14,15 +14,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 }) => {
   return (
     <ReactPlayer
-      url={url}
+      src={url}
       width={width}
       height={height}
       controls={true}
-      config={{
-        youtube: {
-          playerVars: { showinfo: 1 },
-        },
-      }}
     />
   );
 };
