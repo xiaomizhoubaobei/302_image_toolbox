@@ -39,7 +39,7 @@
     "react-player": "^3.4.0",
     "react-zoom-pan-pinch": "^3.6.1",
     "sass": "^1.102.0",
-    "sharp": "^0.35.0",
+    "sharp": "^0.35.3",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "webpack": "^5.93.0",
@@ -61,6 +61,6 @@
   "resolutions": {
     "postcss": "^8.5.26",
     "minimatch@^3.1.2/brace-expansion": "^1.1.16",
-    "sharp": "^0.35.0"
+    "sharp": "^0.35.3"
   }
 }
