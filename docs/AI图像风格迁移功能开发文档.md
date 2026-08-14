@@ -94,9 +94,9 @@ import { TransferControls } from './TransferControls';
 import { useStyleTransferStore } from '@/stores/styleTransferSlice';
 
 export function StyleTransfer() {
-  const { 
-    contentImage, 
-    styleImage, 
+  const {
+    contentImage,
+    styleImage,
     transferParams,
     resultImage,
     setTransferParams,
@@ -110,34 +110,34 @@ export function StyleTransfer() {
         <h2>AI图像风格迁移</h2>
         <p>将艺术风格应用到您的图片上，创造独特的视觉效果</p>
       </div>
-      
+
       <div className="transfer-content">
         <div className="transfer-sidebar">
-          <ContentUploader 
+          <ContentUploader
             contentImage={contentImage}
             onContentUpload={(image) => {
               // 设置内容图片
             }}
           />
-          
-          <StyleSelector 
+
+          <StyleSelector
             selectedStyle={transferParams.styleType}
-            onStyleSelect={(styleType) => setTransferParams({ 
-              ...transferParams, 
-              styleType 
+            onStyleSelect={(styleType) => setTransferParams({
+              ...transferParams,
+              styleType
             })}
           />
-          
-          <TransferControls 
+
+          <TransferControls
             params={transferParams}
             onChange={setTransferParams}
             onTransfer={transferStyle}
             isProcessing={isProcessing}
           />
         </div>
-        
+
         <div className="transfer-main">
-          <StylePreview 
+          <StylePreview
             contentImage={contentImage}
             styleImage={styleImage}
             resultImage={resultImage}
@@ -205,7 +205,7 @@ export function StyleSelector({ selectedStyle, onStyleSelect }: StyleSelectorPro
       <h3>艺术风格</h3>
       <div className="style-options">
         {STYLE_OPTIONS.map((option) => (
-          <div 
+          <div
             key={option.value}
             className={`style-option ${selectedStyle === option.value ? 'selected' : ''}`}
             onClick={() => onStyleSelect(option.value)}
@@ -220,16 +220,16 @@ export function StyleSelector({ selectedStyle, onStyleSelect }: StyleSelectorPro
           </div>
         ))}
       </div>
-      
+
       {selectedStyle === 'custom' && (
         <div className="custom-style-upload">
           <h4>上传自定义风格图片</h4>
-          <input 
-            type="file" 
-            accept="image/*" 
+          <input
+            type="file"
+            accept="image/*"
             onChange={(e) => {
               // 处理自定义风格图片上传
-            }} 
+            }}
           />
         </div>
       )}
@@ -279,29 +279,29 @@ export const useStyleTransferStore = create<StyleTransferState>()(
       colorPreservation: false
     },
     isProcessing: false,
-    
+
     setContentImage: (image) => set({ contentImage: image }),
-    
+
     setStyleImage: (image) => set({ styleImage: image }),
-    
+
     setTransferParams: (params) => set({ transferParams: params }),
-    
+
     transferStyle: async () => {
       const { contentImage, styleImage, transferParams } = get();
       if (!contentImage) return;
-      
+
       set({ isProcessing: true });
-      
+
       try {
         const result = await transferStyle({
           contentImage,
           styleImage: styleImage || '', // 如果没有自定义风格图片，使用预设风格
           ...transferParams
         });
-        
-        set({ 
+
+        set({
           resultImage: result.imageSrc,
-          isProcessing: false 
+          isProcessing: false
         });
       } catch (error) {
         set({ isProcessing: false });

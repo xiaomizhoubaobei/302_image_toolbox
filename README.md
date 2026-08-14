@@ -2,11 +2,11 @@
 
 <p align="center">AI图片工具箱提供了各种丰富的AI处理图片功能，还可以连续进行链式操作。</p>
 
-![pic-tool](docs/图片工具箱.png)  
+![pic-tool](docs/图片工具箱.png)
 
 ## 界面预览
 可通过上传图片或输入描述，选择模型生成图片后进行图片处理，多种图片处理功能可供选择。
-![pic-tool](docs/zh/pic-tool.png)      
+![pic-tool](docs/zh/pic-tool.png)
 
 以去除背景功能为例，根据上传的图片，AI自动识别背景并去除。
 ![pic-tool](docs/zh/图片工具箱1.png)
@@ -71,7 +71,7 @@ cp .env.example .env
 然后在 `.env` 文件中填写您的 302.AI API 密钥：
 
 ```env
-NEXT_PUBLIC_API_KEY="sk-xxx" 
+NEXT_PUBLIC_API_KEY="sk-xxx"
 NEXT_PUBLIC_FETCH_API_URL=https://api.302.ai
 NEXT_PUBLIC_UPLOAD_API_URL=https://dash-api.proxy302.com/gpt/api/upload/gpt/image
 ```

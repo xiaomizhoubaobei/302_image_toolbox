@@ -170,12 +170,12 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
   return (
     <div className="giteeai-controls">
       <h3>GiteeAI参数设置</h3>
-      
-      <GiteeAIModelSelector 
-        value={params.model} 
-        onChange={(model) => onChange({ ...params, model })} 
+
+      <GiteeAIModelSelector
+        value={params.model}
+        onChange={(model) => onChange({ ...params, model })}
       />
-      
+
       <div className="control-group">
         <Label>提示词</Label>
         <Textarea
@@ -184,7 +184,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           placeholder="输入提示词"
         />
       </div>
-      
+
       <div className="control-group">
         <Label>反向提示词</Label>
         <Textarea
@@ -193,7 +193,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           placeholder="输入不希望出现的内容"
         />
       </div>
-      
+
       <div className="control-group">
         <Label>图像分辨率</Label>
         <select
@@ -206,7 +206,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           ))}
         </select>
       </div>
-      
+
       <div className="control-group">
         <Label>生成数量: {params.n}</Label>
         <Slider
@@ -217,7 +217,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           onValueChange={([n]) => onChange({ ...params, n })}
         />
       </div>
-      
+
       <div className="control-group">
         <Label>推理步数: {params.numInferenceSteps || 25}</Label>
         <Slider
@@ -228,7 +228,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           onValueChange={([numInferenceSteps]) => onChange({ ...params, numInferenceSteps })}
         />
       </div>
-      
+
       <div className="control-group">
         <Label>指导尺度: {params.guidanceScale || 7.5}</Label>
         <Slider
@@ -239,7 +239,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           onValueChange={([guidanceScale]) => onChange({ ...params, guidanceScale })}
         />
       </div>
-      
+
       <div className="control-group flex items-center justify-between">
         <Label>智能改写</Label>
         <Switch
@@ -247,7 +247,7 @@ export function GiteeAIControls({ params, onChange }: GiteeAIControlsProps) {
           onCheckedChange={(checked) => onChange({ ...params, promptExtend: checked })}
         />
       </div>
-      
+
       <div className="control-group flex items-center justify-between">
         <Label>添加水印</Label>
         <Switch
@@ -311,28 +311,28 @@ export const useGiteeAIStore = create<GiteeAIState>()(
     isGenerating: false,
     generatedImages: [],
     taskId: null,
-    
+
     setPrompt: (prompt) => set({ prompt }),
-    
+
     setGiteeAIParams: (params) => set({ giteeAIParams: params }),
-    
+
     generateImage: async () => {
       const { prompt, giteeAIParams } = get();
       if (!prompt) return;
-      
+
       set({ isGenerating: true });
-      
+
       try {
         const result = await giteeAIGenerateImage({
           prompt,
           ...giteeAIParams
         });
-        
-        set({ 
+
+        set({
           taskId: result.taskId || null,
-          isGenerating: false 
+          isGenerating: false
         });
-        
+
         // 如果有任务ID，开始轮询任务状态
         if (result.taskId) {
           const checkStatus = async () => {
@@ -347,7 +347,7 @@ export const useGiteeAIStore = create<GiteeAIState>()(
               setTimeout(checkStatus, 5000);
             }
           };
-          
+
           setTimeout(checkStatus, 5000);
         } else if (result.imageUrls) {
           // 如果直接返回了图像URLs
@@ -358,11 +358,11 @@ export const useGiteeAIStore = create<GiteeAIState>()(
         throw error;
       }
     },
-    
+
     checkTaskStatus: async () => {
       const { taskId } = get();
       if (!taskId) return;
-      
+
       try {
         const status = await getGiteeAITaskStatus(taskId);
         if (status.taskStatus === 'SUCCEEDED' && status.results) {

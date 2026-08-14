@@ -1546,7 +1546,7 @@ export async function stitchingImage(src: string, mask: string): Promise<any> {
   })
 }
 
-// Translae Image 
+// Translae Image
 export async function translateImageText(src: string, protectLang: boolean, srcLang: string, tgtLang: string): Promise<any> {
   return new Promise(async (resolve, reject) => {
     try {

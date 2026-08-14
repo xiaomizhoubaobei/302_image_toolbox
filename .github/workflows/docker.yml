@@ -145,5 +145,3 @@ jobs:
                 subject-name: ghcr.io/${{ github.repository_owner }}/302_image_toolbox
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
-
-            

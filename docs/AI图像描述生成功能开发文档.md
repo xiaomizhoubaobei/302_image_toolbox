@@ -106,9 +106,9 @@ import { EmotionAnalyzer } from './EmotionAnalyzer';
 import { useDescriptionStore } from '@/stores/descriptionSlice';
 
 export function ImageDescription() {
-  const { 
-    originalImage, 
-    descriptionResult, 
+  const {
+    originalImage,
+    descriptionResult,
     descriptionParams,
     setDescriptionParams,
     generateImageDescription,
@@ -121,17 +121,17 @@ export function ImageDescription() {
         <h2>AI图像描述生成</h2>
         <p>自动分析图片内容并生成详细文本描述</p>
       </div>
-      
+
       <div className="description-content">
         <div className="description-sidebar">
-          <LanguageSelector 
+          <LanguageSelector
             selectedLanguage={descriptionParams.language}
-            onSelectLanguage={(language) => setDescriptionParams({ 
-              ...descriptionParams, 
-              language 
+            onSelectLanguage={(language) => setDescriptionParams({
+              ...descriptionParams,
+              language
             })}
           />
-          
+
           <div className="detail-controls">
             <h3>详细程度</h3>
             <div className="radio-group">
@@ -141,9 +141,9 @@ export function ImageDescription() {
                   name="detailLevel"
                   value="brief"
                   checked={descriptionParams.detailLevel === 'brief'}
-                  onChange={() => setDescriptionParams({ 
-                    ...descriptionParams, 
-                    detailLevel: 'brief' 
+                  onChange={() => setDescriptionParams({
+                    ...descriptionParams,
+                    detailLevel: 'brief'
                   })}
                 />
                 简要
@@ -154,9 +154,9 @@ export function ImageDescription() {
                   name="detailLevel"
                   value="standard"
                   checked={descriptionParams.detailLevel === 'standard'}
-                  onChange={() => setDescriptionParams({ 
-                    ...descriptionParams, 
-                    detailLevel: 'standard' 
+                  onChange={() => setDescriptionParams({
+                    ...descriptionParams,
+                    detailLevel: 'standard'
                   })}
                 />
                 标准
@@ -167,67 +167,67 @@ export function ImageDescription() {
                   name="detailLevel"
                   value="detailed"
                   checked={descriptionParams.detailLevel === 'detailed'}
-                  onChange={() => setDescriptionParams({ 
-                    ...descriptionParams, 
-                    detailLevel: 'detailed' 
+                  onChange={() => setDescriptionParams({
+                    ...descriptionParams,
+                    detailLevel: 'detailed'
                   })}
                 />
                 详细
               </label>
             </div>
           </div>
-          
+
           <div className="option-controls">
             <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={descriptionParams.includeKeywords}
-                onChange={(e) => setDescriptionParams({ 
-                  ...descriptionParams, 
-                  includeKeywords: e.target.checked 
+                onChange={(e) => setDescriptionParams({
+                  ...descriptionParams,
+                  includeKeywords: e.target.checked
                 })}
               />
               包含关键词
             </label>
-            
+
             <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={descriptionParams.includeEmotion}
-                onChange={(e) => setDescriptionParams({ 
-                  ...descriptionParams, 
-                  includeEmotion: e.target.checked 
+                onChange={(e) => setDescriptionParams({
+                  ...descriptionParams,
+                  includeEmotion: e.target.checked
                 })}
               />
               包含情感分析
             </label>
           </div>
         </div>
-        
+
         <div className="description-main">
           <div className="image-preview">
             {originalImage && (
               <img src={originalImage} alt="待分析图片" />
             )}
           </div>
-          
+
           {descriptionResult && !isProcessing && (
             <div className="description-results">
-              <DescriptionDisplay 
+              <DescriptionDisplay
                 description={descriptionResult.description}
                 format={descriptionParams.outputFormat}
               />
-              
+
               {descriptionParams.includeKeywords && descriptionResult.keywords && (
                 <KeywordTags keywords={descriptionResult.keywords} />
               )}
-              
+
               {descriptionParams.includeEmotion && descriptionResult.emotion && (
                 <EmotionAnalyzer emotion={descriptionResult.emotion} />
               )}
             </div>
           )}
-          
+
           {isProcessing && (
             <div className="processing-indicator">
               <div className="spinner"></div>
@@ -236,16 +236,16 @@ export function ImageDescription() {
           )}
         </div>
       </div>
-      
+
       <div className="description-footer">
-        <button 
+        <button
           className="generate-button"
           disabled={!originalImage || isProcessing}
           onClick={generateImageDescription}
         >
           {isProcessing ? '生成中...' : '生成描述'}
         </button>
-        
+
         {descriptionResult && (
           <div className="action-buttons">
             <button className="copy-button" onClick={() => {
@@ -253,7 +253,7 @@ export function ImageDescription() {
             }}>
               复制描述
             </button>
-            
+
             <button className="export-button" onClick={() => {
               // 导出逻辑
             }}>
@@ -329,26 +329,26 @@ export const useDescriptionStore = create<DescriptionState>()(
       outputFormat: 'plain'
     },
     isProcessing: false,
-    
+
     setOriginalImage: (image) => set({ originalImage: image }),
-    
+
     setDescriptionParams: (params) => set({ descriptionParams: params }),
-    
+
     generateImageDescription: async () => {
       const { originalImage, descriptionParams } = get();
       if (!originalImage) return;
-      
+
       set({ isProcessing: true });
-      
+
       try {
         const result = await generateImageDescription({
           imageSrc: originalImage,
           ...descriptionParams
         });
-        
-        set({ 
+
+        set({
           descriptionResult: result,
-          isProcessing: false 
+          isProcessing: false
         });
       } catch (error) {
         set({ isProcessing: false });

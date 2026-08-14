@@ -174,10 +174,10 @@
 
 /* info */
 .app-desc-content {
-  list-style-type: decimal; 
+  list-style-type: decimal;
 }
 
 .app-desc-content a {
-  color: purple; 
-  text-decoration: underline; 
+  color: purple;
+  text-decoration: underline;
 }

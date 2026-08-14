@@ -26,7 +26,7 @@ export default class ImageManager {
           // 更高效的尺寸调整算法
           const targetSize = maxSizeMB * 1024 * 1024;
           let currentSize = (width * height * 4) / (1024 * 1024);
-          
+
           while (currentSize > maxSizeMB) {
             width = Math.floor(width * 0.9);
             height = Math.floor(height * 0.9);
@@ -82,7 +82,7 @@ export default class ImageManager {
         // 更高效的尺寸调整算法
         const targetSize = maxSizeMB * 1024 * 1024;
         let currentSize = (width * height * 4) / (1024 * 1024);
-        
+
         while (currentSize > maxSizeMB) {
           width = Math.floor(width * 0.9);
           height = Math.floor(height * 0.9);
@@ -120,7 +120,7 @@ export default class ImageManager {
       if (!url || url === '') {
         throw new Error('Invalid URL');
       }
-      
+
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(`Get origin image error: ${res.statusText}`);
@@ -183,7 +183,7 @@ export default class ImageManager {
     }
   }
 
-  // 转换图片格式 
+  // 转换图片格式
   static pngToJpg = async (url: string) => {
     return new Promise((resolve, reject) => {
       const image = new Image();

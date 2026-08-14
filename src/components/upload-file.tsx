@@ -40,7 +40,7 @@ const UploadFile = forwardRef(({ file, setFile }: UplodFileProps, ref: any) => {
         // 显示提示信息
         alert('File size exceeds 10MB. The file will be compressed automatically.')
       }
-      
+
       if (setFile) {
         setFile(file)
       }

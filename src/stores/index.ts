@@ -10,4 +10,3 @@ export const useStore = create<StoreState>()(
     ...createConfigSlice(...a),
   }),
 );
-
