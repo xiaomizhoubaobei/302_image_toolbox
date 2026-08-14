@@ -42,7 +42,7 @@ jobs:
         languages: ${{ matrix.language }}
 
     - name: 自动构建
-      uses: github/codeql-action/autobuild@9e0d7b8d25671d64c341c19c0152d693099fb5ba # v4.35.5
+      uses: github/codeql-action/autobuild@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
 
     - name: 执行 CodeQL 分析
       uses: github/codeql-action/analyze@9e0d7b8d25671d64c341c19c0152d693099fb5ba # v4.35.5
