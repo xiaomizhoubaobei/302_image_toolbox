@@ -28,20 +28,10 @@ jobs:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
 
     steps:
-    - name: 加固运行器（仅允许白名单域名）
+    - name: 加固运行器（审计所有出站调用）
       uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
       with:
-        egress-policy: block
-        allowed-endpoints: |
-          api.github.com:443
-          github.com:443
-          release-assets.githubusercontent.com:443
-          results-receiver.actions.githubusercontent.com:443
-          telemetry.nextjs.org:443
-          token.actions.githubusercontent.com:443
-          uploads.github.com:443
-          registry.npmjs.org:443
-          *.blob.core.windows.net:443
+        egress-policy: audit
 
     - name: 检出仓库
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

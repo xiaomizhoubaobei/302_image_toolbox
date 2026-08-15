@@ -34,24 +34,10 @@ jobs:
       # actions: read
 
     steps:
-      - name: 加固运行器（仅允许白名单域名）
+      - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
         with:
-          egress-policy: block
-          allowed-endpoints: |
-            *.actions.githubusercontent.com:443
-            *.blob.core.windows.net:443
-            api.deps.dev:443
-            api.github.com:443
-            api.osv.dev:443
-            api.scorecard.dev:443
-            codeload.github.com:443
-            fulcio.sigstore.dev:443
-            github.com:443
-            oss-fuzz-build-logs.storage.googleapis.com:443
-            rekor.sigstore.dev:443
-            tuf-repo-cdn.sigstore.dev:443
-            www.bestpractices.dev:443
+          egress-policy: audit
 
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

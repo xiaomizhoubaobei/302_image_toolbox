@@ -20,41 +20,10 @@ jobs:
     build-and-push:
         runs-on: ubuntu-latest
         steps:
-            - name: 加固运行器（仅允许白名单域名）
+            - name: 加固运行器（审计所有出站调用）
               uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
               with:
-                  egress-policy: block
-                  allowed-endpoints: |
-                    api.github.com:443
-                    auth.docker.io:443
-                    fulcio.sigstore.dev:443
-                    ghcr.io:443
-                    github.com:443
-                    hosted-compute-watchdog-prod-eus-01.githubapp.com:443
-                    index.docker.io:443
-                    production.cloudfront.docker.com:443
-                    productionresultssa1.blob.core.windows.net:443
-                    productionresultssa2.blob.core.windows.net:443
-                    productionresultssa3.blob.core.windows.net:443
-                    productionresultssa6.blob.core.windows.net:443
-                    productionresultssa7.blob.core.windows.net:443
-                    productionresultssa8.blob.core.windows.net:443
-                    productionresultssa9.blob.core.windows.net:443
-                    productionresultssa12.blob.core.windows.net:443
-                    productionresultssa14.blob.core.windows.net:443
-                    productionresultssa16.blob.core.windows.net:443
-                    productionresultssa17.blob.core.windows.net:443
-                    productionresultssa19.blob.core.windows.net:443
-                    registry-1.docker.io:443
-                    registry.npmjs.org:443
-                    rekor.sigstore.dev:443
-                    release-assets.githubusercontent.com:443
-                    repo.huaweicloud.com:443
-                    results-receiver.actions.githubusercontent.com:443
-                    run-actions-2-azure-eastus.actions.githubusercontent.com:443
-                    timestamp.sigstore.dev:443
-                    token.actions.githubusercontent.com:443
-                    tuf-repo-cdn.sigstore.dev:443
+                  egress-policy: audit
 
             - name: 检出代码
               uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
