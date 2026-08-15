@@ -29,10 +29,20 @@ jobs:
     runs-on: ubuntu-latest
     name: njsscan 代码扫描
     steps:
-    - name: 加固运行器（审计所有出站调用）
+    - name: 加固运行器（仅允许白名单域名）
       uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2.20.1
       with:
-        egress-policy: audit
+        egress-policy: block
+        allowed-endpoints: |
+          api.github.com:443
+          auth.docker.io:443
+          files.pythonhosted.org:443
+          github.com:443
+          index.docker.io:443
+          production.cloudfront.docker.com:443
+          pypi.org:443
+          registry-1.docker.io:443
+          results-receiver.actions.githubusercontent.com:443
     - name: 检出代码
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
     - name: nodejsscan 扫描
