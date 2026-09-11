@@ -30,7 +30,7 @@
     "context-filter-polyfill": "^0.3.13",
     "konva": "^10.3.0",
     "lodash": "^4.18.0",
-    "next": "16.2.11",
+    "next": "16.3.3",
     "react": "^18",
     "react-advanced-cropper": "0.20.1",
     "react-compare-slider": "^4.0.0",
@@ -42,7 +42,7 @@
     "react-player": "^3.4.0",
     "react-zoom-pan-pinch": "^3.6.1",
     "sass": "^1.102.0",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "webpack": "^5.93.0",
@@ -65,7 +65,7 @@
     "overrides": {
       "postcss": "^8.5.26",
       "brace-expansion": "^1.1.16",
-      "sharp": "^0.35.3"
+      "sharp": "^0.35.4"
     }
   }
 }
