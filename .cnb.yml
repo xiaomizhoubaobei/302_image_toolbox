@@ -74,15 +74,3 @@ main:
             git_user: ${GIT_USERNAME}
             git_email: ${GIT_EMAIL}
             force: true
-  "crontab: 0 0 1 * *":
-    - services:
-        - docker
-      docker:
-        volumes:
-          - /data/codewiki/${CNB_REPO_SLUG}:data
-      stages:
-        - name: 生成 Code Wiki
-          timeout: 4h
-          image: cnbcool/codewiki:latest
-          settings:
-            git_doc_dir: /data/codewiki/${CNB_REPO_SLUG}
